@@ -1,0 +1,36 @@
+/* prjDBF/style.css - Styling for Product Webpage
+        Name: James Derek West
+        Email: westj4@csp.edu
+        Course: CSC235 Server-Side Development
+        Assignment: Project 2
+        Date: 3/27/2023
+*/
+
+body {
+    font-family: sans-serif;
+}
+
+h1 {
+    border: 1px;
+    padding: 10px;
+    background: lightslategray;
+    color: aliceblue;
+}
+
+table {
+    margin-top: 10px;
+    border: 1px solid slategray;
+}
+
+td, th {
+    padding: 10px;
+}
+
+th {
+    background: darkgray;
+    color: aliceblue;
+}
+
+tr:nth-child(even) {
+    background: lightslategray;
+}
