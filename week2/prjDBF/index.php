@@ -11,17 +11,10 @@
         Assignment: Project 2
         Date: 3/27/2023
     -->
-
     <?PHP
-        // Constants
-        // define('DB_USERNAME', 'root');
-        // define('DB_PASSWORD', 'mysql');
-        // define('DB_NAME', 'prjdbf');
+        require_once "../../params.php";
 
-        define('DB_USERNAME', 'root');
-        define('DB_PASSWORD', 'XxABWPJ3ESB3');
-        define('DB_NAME', 'prjdbf');
-
+        // Table Options
         define("TABLE_OPTIONS", 
         [
             "product" => 
@@ -44,18 +37,18 @@
             ]
         ]);
 
-        // Returning visitor?
+        // Display welcome message based on returning user
         if(array_key_exists('hidIsReturning', $_POST)) {
             echo '<h1>Welcome BACK to Product Info Page</h1>';
         } else {
             echo '<h1>Welcome FIRST TIME to Product Info Page</h1>';
         }
 
-        function displayTable($option) {
-            define("TABLE_PARAMS", TABLE_OPTIONS[$option]);
-
+        // Display table
+        function displayTable($colNames, $fieldNames, $query) {
+        
             // Connect to database
-            $db = new mysqli('localhost', DB_USERNAME, DB_PASSWORD, DB_NAME);
+            $db = new mysqli(SERVER, USER, PASSWORD, DATABASE_NAME);
 
             // Handle case where connection to db failed
             if($db->connect_errno > 0) {
@@ -63,20 +56,20 @@
             }
 
             // Handle case where query fails
-            if(!$result = $db->query(TABLE_PARAMS["query"])) {
+            if(!$result = $db->query($query)) {
                 die('There was an error running the query['.$db->error.']');
             }
 
             echo "<table><tr>";
-            foreach(TABLE_PARAMS["colNames"] as $name) {
-                echo "<th>".$name."</th>";
+            foreach($colNames as $colName) {
+                echo "<th>".$colName."</th>";
             }
             echo "</tr>";
 
 
             while($row=$result->fetch_assoc()) {
                 echo "<tr>";
-                foreach(TABLE_PARAMS["fieldNames"] as $field) {
+                foreach($fieldNames as $field) {
                     echo "<td>".$row[$field]."</td>";
                 }
                 echo "</tr>";
@@ -102,8 +95,35 @@
     </form>
     <?php
         if(array_key_exists('table_option', $_POST) && $_POST['table_option'] != "null"){
-            displayTable($_POST['table_option']);
+            $params = TABLE_OPTIONS[$_POST['table_option']];
+            displayTable($params['colNames'], $params['fieldNames'], $params['query']);
         } 
     ?>
+    <p>
+        Development stages
+        <ol>
+            <li>Reviewed requirements</li>
+            <li>Reviewed data set</li>
+            <li>Normalized data set through building of ERD</li>
+            <li>Created SQL tables</li>
+            <li>Added data to tables</li>
+            <li>Created file structure for webpage</li>
+            <li>Test database connection using a couple of test queries</li>
+            <li>Created php file and css file and added some basics</li>
+            <li>Created form with options representing 3 tables</li>
+            <li>Defined database connection constants and refactored</li>
+            <li>Began creation of displayTable function</li>
+            <li>Need to display 3 different tables with different fields for each</li>
+            <li>Defined table specifications based on option selected as a constant</li>
+            <li>Passed table specific params as arguements to displayTable function</li>
+            <li>Built out displayTable function and tested</li>
+            <li>Pushed code to development server using development server database creds and tested</li>
+            <li>Reviewed requirements again</li>
+            <li>Add this list to show step by step process</li>
+            <li>Pushed final index.php to server</li>
+            <li>Gathered documents, zipped, and turned in Assignment</li>
+        </ol>
+    </p>
+
 </body>
 </html>
