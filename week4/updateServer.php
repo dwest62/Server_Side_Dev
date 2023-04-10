@@ -7,47 +7,51 @@
      *  Date: 4/10/23
     */
 
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+	error_reporting(E_ALL);
+
+	// Get post input
 	$postData = file_get_contents("php://input");
-	var_dump(json_decode($postData));
-	var_dump(json_last_error());
-	var_dump(json_last_error_msg());
-	
 
-	// if($postData == false) 
-	// {
-	// 	echo "There was an error with this request";
-	// } 
-	// else 
-	// {
-	// 	$postData = json_decode($postData);
-	// 	deploy($postData['msg']);
-	// }
+	// If no post data, redirct to home page.
+	if(!$postData)
+	{
+		header("Location: http://34.233.186.220/serverSideDev/week4/index.php");
+	}
+	else 
+	{
+		$postData = json_decode($postData);
+		deploy($postData->msg);
+	}
 
-	// function deploy($msg)
-	// {
-	// 	chdir('../groupProject');
-	// 	$result = "";
+	// Deploy to prod branch on server
+	function deploy($commitMsg)
+	{
+		chdir('../groupProject');
+		$result = "";
 		
-	// 	// Checkout master branch
-	// 	$result .= runShellCommand('Switching to master', 'git checkout master 2>&1');
+		// Checkout master branch
+		$result .= runShellCommand('Switching to master', 'git checkout master 2>&1');
 
-	// 	// Pull updates from remote source (github)
-	// 	$result .= runShellCommand('Updating local master branch', 'git pull 2>&1');
+		// Pull updates from remote source (github)
+		$result .= runShellCommand('Updating local master branch', 'git pull 2>&1');
 
-	// 	// Switch back to prod branch
-	// 	$result .= runShellCommand('Switching back to prod branch', 'git checkout prod 2>&1');
+		// Switch back to prod branch
+		$result .= runShellCommand('Switching back to prod branch', 'git checkout prod 2>&1');
 
-	// 	// Merge change updates from master to prod
-	// 	$result .= runShellCommand('Merging changes from master to prod', 'git merge master -m Merged');
+		// Merge change updates from master to prod
+		$result .= runShellCommand('Merging changes from master to prod', 'git merge master -m 2>&1'. $commitMsg);
 
-	// 	// Push updates to remote (github)
-	// 	$result .= runShellCommand('Updating remote prod branch', 'git push 2>&1');
+		// Push updates to remote (github)
+		$result .= runShellCommand('Updating remote prod branch', 'git push 2>&1');
 
-	// 	function runShellCommand($msg, $commandString)
-	// 	{
-	// 		return "<p>" . $msg . "<br/><pre>" . shell_exec($commandString) . "</pre></p>";
-	// 	}
+		echo $result;
+	}
 
-	// 	echo $result;
-	// }
+	// Run command and return resulting message
+	function runShellCommand($message, $commandString)
+	{
+		return "<p>" . $message . "<br/><pre>" . shell_exec($commandString) . "</pre></p>";
+	}
 ?>
