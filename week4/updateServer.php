@@ -8,7 +8,7 @@
     */
 
 	$postData = file_get_contents("php://input");
-	echo "t";
+	echo json_decode($postData)['msg'];
 
 	// if($postData == false) 
 	// {
