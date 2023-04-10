@@ -14,7 +14,7 @@
 	// Get post input
 	$postData = file_get_contents("php://input");
 
-	// If no post data, redirct to home page.
+	// If no post data, redirect to home page.
 	if(!$postData)
 	{
 		header("Location: http://34.233.186.220/serverSideDev/week4/index.php");
