@@ -1,19 +1,19 @@
 <?php
 	/**
-     *  File: proofOfConcept.php - Updates production code from master to prod using git. Echos result.
+     *  File: updateServer.php - Updates production code from master to prod using git. Echos result.
      *  Contributors: James West - westj4@csp.edu
      *  Course: CSC235 Server-Side Development
      *  Assignment: Individual Project - Week 4
      *  Date: 4/10/23
     */
-
+	echo `whoami`;
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);
 
 	// Get post input
 	$postData = file_get_contents("php://input");
-
+	echo "even";
 	// If no post data, redirect to home page.
 	if(!$postData)
 	{
@@ -41,7 +41,7 @@
 		$result .= runShellCommand('Switching back to prod branch', 'git checkout prod 2>&1');
 
 		// Merge change updates from master to prod
-		$result .= runShellCommand('Merging changes from master to prod', 'git merge master -m 2>&1'. $commitMsg);
+		$result .= runShellCommand('Merging changes from master to prod', 'git merge master -m "' . $commitMsg . '" 2>&1');
 
 		// Push updates to remote (github)
 		$result .= runShellCommand('Updating remote prod branch', 'git push 2>&1');
