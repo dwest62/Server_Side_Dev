@@ -22,9 +22,9 @@
 
 <script>
     async function deploy() {
-        const response = await fetch("updateServer.php");
-        const text = await response.text();
-        console.log(text);
+        const response = await fetch("/updateServer.php");
+        document.getElementById("results").innerHTML = response.text();
+        console.log(response);
     }
 </script>
 
