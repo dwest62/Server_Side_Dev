@@ -1,0 +1,18 @@
+/**
+    Stylesheet for week 4 individual project
+    Contributors:James West - westj4@csp.edu
+    Course: CSC235 Server-Side Development
+    Assignment: Week 4 Project
+    Date: 4/10/2023
+ */
+
+body
+{
+    font-family: sans-serif;
+    margin-left: 100px;
+}
+
+body > * {
+    margin-left: 20px;
+}
+

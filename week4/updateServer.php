@@ -4,16 +4,17 @@
      *  Contributors: James West - westj4@csp.edu
      *  Course: CSC235 Server-Side Development
      *  Assignment: Individual Project - Week 4
-     *  Date: 4/10/23
+     *  Date: 4/10/23 
     */
-	echo `whoami`;
+
+
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);
 
 	// Get post input
 	$postData = file_get_contents("php://input");
-	echo "even";
+
 	// If no post data, redirect to home page.
 	if(!$postData)
 	{

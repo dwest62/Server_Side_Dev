@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 
 	<!--
-		File: edit.php - Presentation page
+		File: edit.php - Admin page
 		Contributors: James West - westj4@csp.edu
 		Course: CSC235 Server-Side Development
 		Assignment: Individual Project - Week 4
