@@ -8,7 +8,10 @@
     */
 
 	$postData = file_get_contents("php://input");
-	echo json_decode($postData)['msg'];
+	var_dump(json_decode($postData));
+	var_dump(json_last_error());
+	var_dump(json_last_error_msg());
+	
 
 	// if($postData == false) 
 	// {
