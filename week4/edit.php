@@ -22,7 +22,7 @@
 
 <script>
     async function deploy() {
-        const response = await fetch("/updateServer.php");
+        const response = await fetch("/serverSideDev/week4/updateServer.php");
         document.getElementById("results").innerHTML = response.text();
         console.log(response);
     }
