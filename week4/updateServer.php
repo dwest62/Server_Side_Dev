@@ -42,7 +42,7 @@
 		$result .= runShellCommand('Switching back to prod branch', 'git checkout prod 2>&1');
 
 		// Merge change updates from master to prod
-		$result .= runShellCommand('Merging changes from master to prod', 'git merge master -m "' . $commitMsg . '" 2>&1');
+		$result .= runShellCommand('Merging changes from master to prod', 'git merge master -X theirs -m "' . $commitMsg . '" 2>&1');
 
 		// Push updates to remote (GitHub)
 		$result .= runShellCommand('Updating remote prod branch', 'git push 2>&1');
