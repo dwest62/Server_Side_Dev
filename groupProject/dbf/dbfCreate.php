@@ -22,8 +22,6 @@
         require_once "dbfAddData.php";
         require_once "../../params.php";
 
-        
-
         $conn = createConnection(SERVER, USER, PASSWORD);
 
         /**
