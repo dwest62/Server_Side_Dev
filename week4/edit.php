@@ -32,7 +32,7 @@
 </head>
 <body id="admin-body">
     <h1 id="admin-h1">CSC 235 Group Project Admin</h1>
-    <form action="javascript:deploy())">
+    <form action="javascript:deploy()">
         <label for="msg">Git log message</label>
         <input type="text" id="msg">
         <button type="submit">Deploy Changes to Server</button>
