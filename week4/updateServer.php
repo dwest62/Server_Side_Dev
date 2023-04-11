@@ -35,7 +35,7 @@
 		// Checkout master branch
 		$result .= runShellCommand('Switching to master', 'git checkout master 2>&1');
 
-		// Pull updates from remote source (github)
+		// Pull updates from remote source (GitHub)
 		$result .= runShellCommand('Updating local master branch', 'git pull 2>&1');
 
 		// Switch back to prod branch
@@ -44,15 +44,15 @@
 		// Merge change updates from master to prod
 		$result .= runShellCommand('Merging changes from master to prod', 'git merge master -m "' . $commitMsg . '" 2>&1');
 
-		// Push updates to remote (github)
+		// Push updates to remote (GitHub)
 		$result .= runShellCommand('Updating remote prod branch', 'git push 2>&1');
 
 		echo $result;
 	}
 
 	// Run command and return resulting message
-	function runShellCommand($message, $commandString)
+	function runShellCommand($message, $commandString): string
 	{
 		return "<p>" . $message . "<br/><pre>" . shell_exec($commandString) . "</pre></p>";
 	}
-?>
+
