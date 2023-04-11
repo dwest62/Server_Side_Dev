@@ -33,16 +33,16 @@
 		$result = "";
 		
 		// Checkout master branch
-		$result .= runShellCommand('Switching to master', 'sudo git checkout master 2>&1');
+		$result .= runShellCommand('Switching to master', 'git checkout master 2>&1');
 
 		// Pull updates from remote source (GitHub)
-		$result .= runShellCommand('Updating local master branch', 'sudo git pull 2>&1');
+		$result .= runShellCommand('Updating local master branch', 'git pull 2>&1');
 
 		// Switch back to prod branch
-		$result .= runShellCommand('Switching back to prod branch', 'sudo git checkout prod 2>&1');
+		$result .= runShellCommand('Switching back to prod branch', 'git checkout prod 2>&1');
 
 		// Merge change updates from master to prod
-		$result .= runShellCommand('Merging changes from master to prod', 'sudo git merge master -X theirs -m "' . $commitMsg . '" 2>&1');
+		$result .= runShellCommand('Merging changes from master to prod', 'git merge master -X theirs -m "' . $commitMsg . '" 2>&1');
 
 		// Push updates to remote (GitHub)
 		$result .= runShellCommand('Updating remote prod branch', 'sudo git push 2>&1');
