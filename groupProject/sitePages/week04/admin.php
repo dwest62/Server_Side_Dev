@@ -14,9 +14,12 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 
     <?PHP
+<<<<<<< HEAD
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
+=======
+>>>>>>> origin/main
         // Set up connection constants
         // Using default username and password for AMPPS  
         require_once "../../dbf/dbfLib.php";
@@ -26,11 +29,15 @@
 
         // Global connection object
         $conn = createConnection(SERVER, USER, PASSWORD);
+<<<<<<< HEAD
         $conn->us
+=======
+>>>>>>> origin/main
 
 
         // Did the user select a runner from the list?
         // 'new' is the value of the first item on the runner list box 
+<<<<<<< HEAD
 //        if(isset($_POST['lstDestination']) && !($_POST['lstDestination'] == 'new')){
 //            // Extract runner and sponsor information
 //            $sql = "SELECT destination_id, destination_name
@@ -39,6 +46,16 @@
 //            $result = $conn->query($sql);
 //            $row = $result->fetch_assoc();
 //        } // end if tableEdit
+=======
+        if(isset($_POST['lstDestination']) && !($_POST['lstDestination'] == 'new')){
+            // Extract runner and sponsor information
+            $sql = "SELECT destination_id, destination_name 
+                    FROM destination
+                    WHERE destination_id =" . $_POST['lstDestination'];
+            $result = $conn->query($sql);
+            $row = $result->fetch_assoc();
+        } // end if tableEdit
+>>>>>>> origin/main
         
         /*
         if(isset($_POST['lstRunner']) && !($_POST['lstRunner'] == 'new')){
@@ -84,18 +101,29 @@
 
             <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST" name="tableEdit" id="tableEdit">
                 <label for="lstDestination"><strong>Select Destination</strong></label>
+<<<<<<< HEAD
                 <select name="lstDestination" id="lstDestination" onChange="this.form.submit();">
                     <option value="new">Select a name</option>
 
+=======
+
+                <select name="lstDestination" id="lstDestination" onChange="this.form.submit();">
+                    <option value="new">Select a name</option>
+>>>>>>> origin/main
                     <?php
                         // Loop through the runner table to build the <option> list
                         $sql = "SELECT destination_id, destination_name
                                 FROM destination ORDER BY destination_name";
                         $result = $conn->query($sql);
+<<<<<<< HEAD
                         var_dump($result);
 
                         while($row = $result->fetch_assoc()) {
                             echo "<option value='" . $row['destination_id'] . "'>" . $row['destination_name'] . "</option>";
+=======
+                        while($row = $result->fetch_assoc()) {   
+                            echo "<option value='" . $row['destination_id'] . "'>" . $row['destination_name'] . "</option>\n";
+>>>>>>> origin/main
                         }
                     ?>
                 </select> 

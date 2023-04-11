@@ -31,9 +31,15 @@
 	{
 		chdir('../groupProject');
 		$result = "";
-		
+
+		// Clear any unstaged / uncommitted changes prod branch
+		$result .= runShellCommand('Clearing prod branch', 'git reset --hard 2>&1');
+
 		// Checkout master branch
 		$result .= runShellCommand('Switching to master', 'git checkout master 2>&1');
+
+		// Clear any unstaged / uncommitted changes to master branch
+		$result .= runShellCommand('Clearing master branch', 'git reset --hard 2>&1');
 
 		// Pull updates from remote source (GitHub)
 		$result .= runShellCommand('Updating local master branch', 'git pull 2>&1');
