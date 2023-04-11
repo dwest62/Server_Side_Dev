@@ -20,13 +20,12 @@
         <nav><a href="presentation.php">Home</a><a href="index.php">App</a></nav>
     </header>
     <main>
-        <h2>Assessment</h2>
+        <h3>The Problem</h3>
         <p>
             James and Dylan are working together on a group project for their CS class and have made a great team,
             however, they are experiencing issues populating changes made to the project accross various local and
             production environments. 
         </p>
-        <h3>The Problem</h3>
         <p>
             Their initial quick solution was to use a shared drop box as the place to share changes. James and Dylan
             are storing the code in other folders on their local devices while developing and then posting changes to
@@ -34,7 +33,8 @@
             locationsby two seperate people (James does not have access to Dylan's personal or prod env and vice versa).
         </p>
         <h3>Q&A</h3>
-        <div class="q_and_a">
+
+        <div class="q-and-a">
             <p class="question">What are the technical specifications local and production environments?</p>
             <p class="answer">
                 We are both using the AMPPS stack on a Windows machine for our local development environment. AMPPS likes
@@ -42,7 +42,7 @@
                 James is using an AWS LightSail Cloud Linux Server to host his projects. 
             </p>
         </div>
-        <div class="q_and_a">
+        <div class="q-and-a">
             <p class="question">What version control technologies are James and Dylan familiar with or willing to 
                 learn?
             </p>
@@ -51,20 +51,20 @@
                 in the industry they are hoping to work in, they would be very willing to learn.
             </p>
         </div>
-        <div class="q_and_a">
+        <div class="q-and-a">
             <p class="question">Would consolidation to 1 production environment be acceptable?</p>
             <p class="answer">Yes, we have been considering consolidating to one "main" production enviroment.</p>
         </div>
-        <div class="q_and_a">
+        <div class="q-and-a">
             <p class="question">
-                If so, who's production environment would be used and how important is it that both developers be able to post changes to this environment?
+                If so, whose production environment would be used and how important is it that both developers be able to post changes to this environment?
             </p>
             <p class="answer">
                 We have been discussing using James' production server as the "main" server. It is very important that both developers be able to make changes. 
                 Preferrably, this would be done without Dylan having to ssh to James' cloud server. 
             </p>
         </div>
-        <div class="q_and_a">
+        <div class="q-and-a">
             <p class="question">
                 If you could wake up tomorrow and a miracle happened that solved this problem, what might that look 
                 like?

@@ -11,14 +11,58 @@ body
     font-family: sans-serif;
 }
 
+header {
+    margin-top: 20px;
+}
+
+main {
+    margin: 30px;
+}
+
 h1 {
     display: block;
     width: fit-content;
     margin: auto;
 }
 
+h3 {
+    font-size: 18px;
+    border-bottom: black solid;
+    padding-bottom: 5px;
+}
+
 p {
     font-size: 14px;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 10px;
+}
+
+img {
+    display: block;
+    margin: auto;
+    width: 750px;
+}
+.q-and-a {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 15px;
+}
+.question {
+    font-weight: bold;
+    font-style: italic;
+    padding: 0px;
+    margin: 0px;
+}
+
+.answer {
+    padding: 0px;
+    margin: 0px;
 }
 
 #admin-h1 {
