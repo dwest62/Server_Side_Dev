@@ -2,7 +2,7 @@
 
 namespace sunRunTable;
 
-class RunnerTable implements \Table
+class RunnerTable implements \dbFactory\Table
 {
 
     public static function buildTable(): bool

@@ -4,7 +4,7 @@ namespace sunRunTable;
 
 use mysqli;
 
-class SponsorTable implements \Table
+class SponsorTable implements \dbFactory\Table
 {
     public static function buildTable(mysqli $conn): bool
     {

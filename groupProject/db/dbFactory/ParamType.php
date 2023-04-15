@@ -1,5 +1,6 @@
 <?php
 
+namespace dbFactory;
 enum ParamType: string
 {
     case HOST_NAME = "host";

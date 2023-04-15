@@ -4,7 +4,7 @@ namespace sunRunTable;
 
 use mysqli;
 
-class runnerRaceTable implements \Table
+class runnerRaceTable implements \dbFactory\Table
 {
     public static function buildTable(mysqli $conn): bool
     {

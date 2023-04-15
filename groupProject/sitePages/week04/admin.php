@@ -16,7 +16,7 @@
     <?PHP
         // Set up connection constants
         // Using default username and password for AMPPS  
-        require_once "../../dbf/dbfLib.php";
+        require_once "../../db/dbfLib.php";
         require_once "../../../params.php";
 
             
