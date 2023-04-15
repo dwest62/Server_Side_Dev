@@ -6,7 +6,7 @@ use mysqli;
 
 class SponsorTable implements \Table
 {
-    public static function buildTable(mysqli $conn): bool
+    public static function addTableToDatabase(mysqli $conn): bool
     {
         $sql = <<<SQL
         CREATE TABLE IF NOT EXISTS sponsor (

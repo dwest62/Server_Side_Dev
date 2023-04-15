@@ -54,17 +54,13 @@ class DBFactory
 
     private static function getParam(string | null $param, ParamType $type): string
     {
-        if($param)
-        {
+        if($param):
             return $param;
-        }
-        else {
-            if (($param = ini_get("mysql.default_$type->value"))) {
-                return $param;
-            } else {
-                die("Connection Error: Invalid Server Parameter for $type->name");
-            }
-        }
+        elseif ($param = ini_get("mysql.default_$type->value")):
+            return $param;
+        else:
+            die("Connection Error: Invalid Server Paramet for $type->name");
+        endif;
     }
 
 }
