@@ -38,14 +38,14 @@
         else
         {
             $row = $result->fetch_assoc();
-            echo "<table>";
+            echo "<dbTable>";
             displayTableRow(array_keys($row), true);
             displayTableRow($row, false);
             while ($row = $result->fetch_assoc())
             {
                 displayTableRow($row, false);
             }
-            echo "</table>";
+            echo "</dbTable>";
         }
         return true;
     }

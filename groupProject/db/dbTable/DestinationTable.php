@@ -1,12 +1,9 @@
 <?php
 
-namespace dbfTable;
-
-use mysqli;
-
-class DestinationTable implements Table
+include_once "Table.php";
+class DestinationTable extends Table
 {
-    public static function addTable(mysqli $conn): bool|\mysqli_result
+    public static function addTable(mysqli $conn): bool
     {
         $sql = <<<SQL
             CREATE TABLE destination(
@@ -25,14 +22,8 @@ class DestinationTable implements Table
         return $conn->query($sql);
     }
 
-    public static function addData(mysqli $conn, string $destination_name, string $destination_desc, string $image_url,
-        string $website, string $zip, string $line_1, string $line_2, string $city): bool|mysqli
+    public function getName(): string
     {
-        $sql = <<<SQL
-            INSERT INTO destination VALUES (NULL, $destination_name, $destination_desc, $image_url, $website, $zip, 
-                                            $line_1, $line_2, $city)
-        SQL;
-        return $conn->query($sql);
+        return "destination";
     }
-
 }

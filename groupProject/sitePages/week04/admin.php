@@ -165,7 +165,7 @@
                 <select name="lstDestination" id="lstDestination" onChange="this.form.submit();">
                     <option value="new">Select a name</option>
                     <?php
-                        // Loop through the runner table to build the <option> list
+                        // Loop through the runner dbTable to build the <option> list
                         $sql = "SELECT destination_id as 'id', destination_name as 'name'
                                 FROM destination ORDER BY destination_name";
                         $result = $conn->query($sql);

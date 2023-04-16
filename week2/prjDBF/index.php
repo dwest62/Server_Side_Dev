@@ -44,7 +44,7 @@
             echo '<h1>Welcome FIRST TIME to Product Info Page</h1>';
         }
 
-        // Display table
+        // Display dbTable
         function displayTable($colNames, $fieldNames, $query) {
         
             // Connect to database
@@ -60,7 +60,7 @@
                 die('There was an error running the query['.$db->error.']');
             }
 
-            echo "<table><tr>";
+            echo "<dbTable><tr>";
             foreach($colNames as $colName) {
                 echo "<th>".$colName."</th>";
             }
@@ -74,13 +74,13 @@
                 }
                 echo "</tr>";
             }
-            echo "</table>";
+            echo "</dbTable>";
             $db->close();
         }
     ?>
 </head>
 <body>
-    <!-- Allow user to select which table to view -->
+    <!-- Allow user to select which dbTable to view -->
     <form name="formDBF" method="POST" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>">
         What information would you like to veiw?
         <select name="table_option" onchange="this.form.submit()">

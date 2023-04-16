@@ -22,11 +22,11 @@
     const DB_NAME = "sunrun";
 
     // Establish database connection. Use php ini arguments unless otherwise specified.
-    $conn = DBFactory::connect();
+    $conn = srDBFactory::connect();
 
     // Drop DB if exists and create new database
-    if (!DBFactory::databaseExists(DB_NAME, $conn)): DBFactory::dropDatabase(DB_NAME, $conn); endif;
-    DBFactory::createDatabase(DB_NAME, $conn);
+    if (!srDBFactory::databaseExists(DB_NAME, $conn)): srDBFactory::dropDatabase(DB_NAME, $conn); endif;
+    srDBFactory::createDatabase(DB_NAME, $conn);
 
     RunnerTable::addTableToDatabase($conn);
     RaceTable::addTableToDatabase($conn);
@@ -43,13 +43,13 @@
    <main>
        <h3>Initializing Sun Run Database</h3>
 
-       <?php if(!DBFactory::databaseExists(DB_NAME, $conn)): ?>
+       <?php if(!srDBFactory::databaseExists(DB_NAME, $conn)): ?>
        <p><?= DB_NAME?> exists.</p>
        <?php else:?>
-       <p>Dropping database - <?= getQueryResultMsg(DBFactory::dropDatabase(DB_NAME, $conn), $conn)?></p>
+       <p>Dropping database - <?= getQueryResultMsg(srDBFactory::dropDatabase(DB_NAME, $conn), $conn)?></p>
        <?php endif ?>
 
-       <p>Creating database - <?= getQueryResultMsg(DBFactory::createDatabase(DB_NAME, $conn), $conn)?></p>
+       <p>Creating database - <?= getQueryResultMsg(srDBFactory::createDatabase(DB_NAME, $conn), $conn)?></p>
 
        <?php $conn->select_db(DATABASE_NAME) ?>
 

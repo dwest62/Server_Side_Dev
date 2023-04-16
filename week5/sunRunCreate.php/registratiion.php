@@ -79,7 +79,7 @@
      <select name="lstRunner" id="lstRunner" onChange="this.form.submit();">
         <option value="new">Select a name</option>
         <?PHP
-           // Loop through the runner table to build the <option> list
+           // Loop through the runner dbTable to build the <option> list
            $sql = "SELECT id_runner, CONCAT(fName,' ',lName) AS 'name' 
            FROM runner ORDER BY lName";
            $result = $conn->query($sql);

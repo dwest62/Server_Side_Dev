@@ -11,7 +11,7 @@
    Written by Peter K. Johnson for The Learning House
    Written  08-01-15
    Revised: 08-05-15 Refactor code grouping the create and add records together
-                     Populate runner_race table 
+                     Populate runner_race dbTable
 */
    
 // Set up connection constants
@@ -235,7 +235,7 @@ $conn->close();
 /****************************************************************
  * buildRunnerRace( ) - Register runner for specific races
  *                       using sample data.
- *  Sets up a table with two foreign keys 
+ *  Sets up a dbTable with two foreign keys
  *  connecting Table:runner to Table:race
  *    Parameters:  $fName - runner's first name
  *                 $lName - runner's last name
@@ -291,7 +291,7 @@ function buildRunnerRace($fName, $lName, $thisRace) {
  ********************************************/
 function displayResult($result, $sql) {
    if ($result->num_rows > 0) {
-      echo "<table border='1'>\n";
+      echo "<dbTable border='1'>\n";
       // print headings (field names)
       $heading = $result->fetch_assoc( );
       echo "<tr>\n";
@@ -318,7 +318,7 @@ function displayResult($result, $sql) {
            }
            echo "</tr>\n";
        }
-       echo "</table>\n";
+       echo "</dbTable>\n";
    } else {
        echo "<strong>zero results using SQL: </strong>" . $sql;
    }

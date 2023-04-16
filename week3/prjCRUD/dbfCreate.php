@@ -197,7 +197,7 @@
                 ["product", "addProductTable"]
             ] as $nameFunc) {
             $success = ($nameFunc[1])();
-            echo "<br />&emsp;Adding $nameFunc[0] table > " . getQueryResultMsg($success);
+            echo "<br />&emsp;Adding $nameFunc[0] dbTable > " . getQueryResultMsg($success);
             if (!$success) {
                 return false;
             }

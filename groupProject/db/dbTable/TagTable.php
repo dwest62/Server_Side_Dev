@@ -1,12 +1,8 @@
 <?php
-
-namespace dbfTable;
-
-use mysqli;
-
-class TagTable implements Table
+include_once "Table.php";
+class TagTable extends Table
 {
-    public static function addTable(mysqli $conn): bool|\mysqli_result
+    public static function addTable(mysqli $conn): bool
     {
         $sql = <<<SQL
             CREATE TABLE tag(
@@ -20,11 +16,8 @@ class TagTable implements Table
         return $conn->query($sql);
     }
 
-    public function addEntry(mysqli $conn, ?int $tag_type, string $tag_name): bool|\mysqli_result
+    public function getName(): string
     {
-        $sql = <<<SQL
-            INSERT INTO tag VALUES (NULL, $tag_type, $tag_name)
-        SQL;
-        return $conn->query($sql);
+        return "tag";
     }
 }

@@ -7,7 +7,7 @@ const TABLE_OPTIONS = [
             "colNames" => ["Product Name", "Color", "Price", "On Hand Quantity", "Product Page"],
             "fieldNames" => ["product_name", "color", "price", "quantity", "page"],
             "query" => "Select * FROM product",
-            "explanation" => 'Table displays all non-associative data from the product table.'
+            "explanation" => 'Table displays all non-associative data from the product dbTable.'
         ],
     "manufacturer" =>
         [
@@ -15,7 +15,7 @@ const TABLE_OPTIONS = [
             "colNames" => ["Manufacturer", "Manufacturer Website"],
             "fieldNames" => ["manufacturer_name", "manufacturer_page"],
             "query" => "Select * FROM manufacturer",
-            "explanation" => 'Table displays all data non-associative data from the manufacturer table.'
+            "explanation" => 'Table displays all data non-associative data from the manufacturer dbTable.'
         ],
     "department" =>
         [
@@ -23,7 +23,7 @@ const TABLE_OPTIONS = [
             "colNames" => ["Department", "Department Manager"],
             "fieldNames" => ["department_name", "manager"],
             "query" => "Select * FROM department",
-            "explanation" => 'Table displays all data non-associative data from the department table.'
+            "explanation" => 'Table displays all data non-associative data from the department dbTable.'
         ],
     "productOnDepartmentInnerJoin" =>
         [
@@ -32,7 +32,7 @@ const TABLE_OPTIONS = [
                 "Department Manager"],
             "fieldNames" => ["product_name", "color", "price", "quantity", "page", "department_name", "manager"],
             "query" => "Select * FROM product JOIN department d on d.department_id = product.department",
-            "explanation" => 'Table displays product table entries joined with corresponding department entries, excluding entries which are NULL for the product.department field.'
+            "explanation" => 'Table displays product dbTable entries joined with corresponding department entries, excluding entries which are NULL for the product.department field.'
         ],
     "productOnDepartmentLeftOuterJoin" =>
         [
@@ -41,7 +41,7 @@ const TABLE_OPTIONS = [
                 "Department Manager"],
             "fieldNames" => ["product_name", "color", "price", "quantity", "page", "department_name", "manager"],
             "query" => "Select * FROM product LEFT OUTER JOIN department d on d.department_id = product.department",
-            "explanation" => 'Table displays all product table entries joined with corresponding department entries, including entries which are NULL for the product.department field.'
+            "explanation" => 'Table displays all product dbTable entries joined with corresponding department entries, including entries which are NULL for the product.department field.'
         ],
     "manufacturerOnProductRightOuterJoin" =>
         [
@@ -54,7 +54,7 @@ const TABLE_OPTIONS = [
                 Select * FROM manufacturer AS m
                 RIGHT OUTER JOIN product p ON m.manufacturer_id = p.manufacturer
                 ORDER BY m.manufacturer_name",
-            "explanation" => 'Table displays all product table entries joined with corresponding manufacturer entries, including entries which are NULL for the product.manufacturer field.'
+            "explanation" => 'Table displays all product dbTable entries joined with corresponding manufacturer entries, including entries which are NULL for the product.manufacturer field.'
         ],
     "all" =>
         [
@@ -69,7 +69,7 @@ const TABLE_OPTIONS = [
                 LEFT OUTER JOIN department d ON p.department = d.department_id
                 ORDER BY p.product_name
                 ",
-            "explanation" => 'Table displays all product table entries joined with corresponding department entries and manufacturer entries, including entries which are NULL for the product.manufacturer fields and including entries which are NULL for the product.department fields.'
+            "explanation" => 'Table displays all product dbTable entries joined with corresponding department entries and manufacturer entries, including entries which are NULL for the product.manufacturer fields and including entries which are NULL for the product.department fields.'
         ]
 ];
 

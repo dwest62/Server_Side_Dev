@@ -1,13 +1,10 @@
 <?php
 
-namespace dbfTable;
-
-use mysqli;
-
-class DestinationTagTable implements Table
+include_once "Table.php";
+class DestinationTagTable extends Table
 {
 
-    public static function addTable(mysqli $conn): bool|\mysqli_result
+    public static function addTable(mysqli $conn): bool
     {
         $sql = <<<SQL
             CREATE TABLE destination_tag(
@@ -21,12 +18,8 @@ class DestinationTagTable implements Table
         SQL;
         return $conn->query($sql);
     }
-
-    public static function addEntry(mysqli $conn, int $destination, int $tag): bool|mysqli
+    public function getName(): string
     {
-        $sql = <<<SQL
-            INSERT INTO destination_tag VALUES (NULL, $destination, $tag)
-        SQL;
-        return $conn->query($sql);
+        return "destination_tag";
     }
 }

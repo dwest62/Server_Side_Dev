@@ -35,14 +35,14 @@ function displayTable(String $query, mysqli $conn): bool
     else
     {
         $row = $result->fetch_assoc();
-        echo "<table>";
+        echo "<dbTable>";
         displayTableRow(array_keys($row), true);
         displayTableRow($row, false);
         while ($row = $result->fetch_assoc())
         {
             displayTableRow($row, false);
         }
-        echo "</table>";
+        echo "</dbTable>";
     }
     return true;
 }
@@ -60,7 +60,7 @@ function displayParameterizedTable(array $params, mysqli $conn)
         echo "No rows to display";
         return false;
     }
-    echo "<table>";
+    echo "<dbTable>";
     displayTableRow($params['colNames'], true);
     while($row=$result->fetch_assoc())
     {
@@ -71,7 +71,7 @@ function displayParameterizedTable(array $params, mysqli $conn)
         }
         displayTableRow($arr, false);
     }
-    echo "</table>";
+    echo "</dbTable>";
 
 }
 

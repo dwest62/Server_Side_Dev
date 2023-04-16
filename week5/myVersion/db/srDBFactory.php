@@ -1,6 +1,6 @@
 <?php
 
-class DBFactory
+class srDBFactory
 {
     public static function connect(
         ?string $hostname = null,
