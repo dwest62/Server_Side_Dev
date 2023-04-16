@@ -33,18 +33,35 @@
     SponsorTable::addTableToDatabase($conn);
     RunnerRaceTable::addTableToDatabase($conn);
 
+    function getQueryResultMsg(mysqli_result | bool $result, mysqli $conn): string
+    {
+        return $result ? "Success" : "Failed with error: $conn->error";
+    }
     ?>
 </head>
 <body>
    <main>
+       <h3>Initializing Sun Run Database</h3>
+
        <?php if(!DBFactory::databaseExists(DB_NAME, $conn)): ?>
        <p><?= DB_NAME?> exists.</p>
+       <?php else:?>
+       <p>Dropping database - <?= getQueryResultMsg(DBFactory::dropDatabase(DB_NAME, $conn), $conn)?></p>
        <?php endif ?>
 
-       <p>
-           Dropping database -
-                <?= DBFactory::dropDatabase(DB_NAME, $conn) ? "Success" : "Failed with error: $conn->error"?>
-       </p>
+       <p>Creating database - <?= getQueryResultMsg(DBFactory::createDatabase(DB_NAME, $conn), $conn)?></p>
+
+       <?php $conn->select_db(DATABASE_NAME) ?>
+
+       <h3>Creating Tables</h3>
+
+        // for each?
+       <p>Runner Table: <?= getQueryResultMsg(RunnerTable::addTableToDatabase($conn), $conn) ?></p>
+       <p>Race Table: <?= getQueryResultMsg(RaceTable::addTableToDatabase($conn), $conn) ?></p>
+       <p>Runner_Race Table: <?= getQueryResultMsg(RunnerRaceTable::addTableToDatabase($conn), $conn) ?></p>
+       <p>Sponsor Table: <?= getQueryResultMsg(SponsorTable::addTableToDatabase($conn), $conn) ?></p>
+
+
 
 
    </main>
