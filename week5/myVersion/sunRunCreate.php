@@ -51,7 +51,7 @@
 
        <p>Creating database - <?= getQueryResultMsg(srDBFactory::createDatabase(DB_NAME, $conn), $conn)?></p>
 
-       <?php $conn->select_db(DATABASE_NAME) ?>
+       <?php $conn->select_db(DB_NAME) ?>
 
        <h3>Creating Tables</h3>
 

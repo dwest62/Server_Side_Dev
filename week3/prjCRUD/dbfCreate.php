@@ -34,14 +34,14 @@
 
         // Drop database if exists.
         echo "<p>Database " . (databaseExists()
-                ? (DATABASE_NAME . " exists.<br/>DROPPING database > " . getQueryResultMsg(dropDatabase()))
-                : DATABASE_NAME . " does not exist.");
+                ? (DB_NAME . " exists.<br/>DROPPING database > " . getQueryResultMsg(dropDatabase()))
+                : DB_NAME . " does not exist.");
 
         // Create new database
-        echo "<br />Creating database " . DATABASE_NAME . " from scratch > " . getQueryResultMsg(createNewDatabase());
+        echo "<br />Creating database " . DB_NAME . " from scratch > " . getQueryResultMsg(createNewDatabase());
 
         // Select database
-        $conn->select_db(DATABASE_NAME);
+        $conn->select_db(DB_NAME);
 
         // Add tables
         echo "<br />Adding Tables > ";
@@ -216,7 +216,7 @@
     {
         global $conn;
         $sql =
-            "CREATE DATABASE " . DATABASE_NAME;
+            "CREATE DATABASE " . DB_NAME;
         return $conn->query($sql);
     }
 
@@ -226,7 +226,7 @@
     function databaseExists(): bool
     {
         global $conn;
-        $sql = "SELECT schema_name FROM information_schema.schemata WHERE SCHEMA_NAME LIKE " . "'" . DATABASE_NAME . "'";
+        $sql = "SELECT schema_name FROM information_schema.schemata WHERE SCHEMA_NAME LIKE " . "'" . DB_NAME . "'";
         return $conn->query($sql)->num_rows;
     }
 
@@ -237,7 +237,7 @@
     {
         global $conn;
         $sql =
-            "DROP DATABASE " . DATABASE_NAME;
+            "DROP DATABASE " . DB_NAME;
         return $conn->query($sql);
     }
 

@@ -71,7 +71,7 @@
 if(array_key_exists('option', $_POST) && $_POST['option'] != "null")
 {
     $conn = createConnection(SERVER, USER, PASSWORD);
-    $conn->select_db(DATABASE_NAME);
+    $conn->select_db(DB_NAME);
 
     $params = TABLE_OPTIONS[$_POST['option']];
     displayParameterizedTable($params, $conn);

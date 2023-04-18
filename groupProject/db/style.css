@@ -10,7 +10,9 @@
 
 body {
     font-family: sans-serif;
-    margin: 20px;
+    margin: 50px;
+    font-size: 14px;
+    line-height: 1.4;
 }
 
 h1, #bar {
@@ -23,8 +25,17 @@ h1, #bar {
 }
 
 table {
-    margin-top: 5px;
+    margin: 20px 0px;
     border: 1px solid slategray;
+
+}
+
+caption{
+    text-transform: capitalize;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-style: italic;
 }
 
 td, th {
@@ -38,11 +49,6 @@ th {
 
 tr:nth-child(even) {
     background: lightslategray;
-}
-
-p {
-    font-size: 14px;
-    line-height: 1.4;
 }
 
 #table_details {

@@ -48,7 +48,7 @@
         function displayTable($colNames, $fieldNames, $query) {
         
             // Connect to database
-            $db = new mysqli(SERVER, USER, PASSWORD, DATABASE_NAME);
+            $db = new mysqli(SERVER, USER, PASSWORD, DB_NAME);
 
             // Handle case where connection to db failed
             if($db->connect_errno > 0) {

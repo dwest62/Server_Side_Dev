@@ -20,4 +20,6 @@ class TagTable extends Table
     {
         return "tag";
     }
+
+
 }

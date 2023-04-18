@@ -11,7 +11,7 @@
     <head>
     <meta charset="utf-8">
     <title>Administration Page</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="../admin/style.css">
 
     <?PHP
         // Set up connection constants
@@ -23,7 +23,7 @@
 
         // Global connection object
         $conn = createConnection(SERVER, USER, PASSWORD);
-        $conn->select_db(DATABASE_NAME);
+        $conn->select_db(DB_NAME);
 
 
         // Did the user select a runner from the list?
@@ -185,7 +185,6 @@
                     <div class="topLabel">
                         <label for="txtName">Name</label>
                         <input type="text" name="txtName"   id="txtName" value="<?php echo $destination['name'] ?>" />
-                        
                     </div>
 
                     <div class="topLabel">

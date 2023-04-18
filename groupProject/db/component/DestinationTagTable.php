@@ -22,4 +22,5 @@ class DestinationTagTable extends Table
     {
         return "destination_tag";
     }
+
 }

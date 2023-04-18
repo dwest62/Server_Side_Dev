@@ -29,20 +29,20 @@ if ($conn->connect_error) {
 } 
 
 // Start with a new database to start primary keys at 1
-$sql = "DROP DATABASE " . DATABASE_NAME;
-runQuery($sql, "DROP " . DATABASE_NAME, true);
+$sql = "DROP DATABASE " . DB_NAME;
+runQuery($sql, "DROP " . DB_NAME, true);
 
 // Create database if it doesn't exist
-$sql = "CREATE DATABASE IF NOT EXISTS " . DATABASE_NAME;
+$sql = "CREATE DATABASE IF NOT EXISTS " . DB_NAME;
 if ($conn->query($sql) === TRUE) {
-    echo "The database " . DATABASE_NAME . " exists or was created successfully!<br />";
+    echo "The database " . DB_NAME . " exists or was created successfully!<br />";
 } else {
-    echo "Error creating database " . DATABASE_NAME . ": " . $conn->error;
+    echo "Error creating database " . DB_NAME . ": " . $conn->error;
     echo "<br />";
 }
 
 // Select the database
-$conn->select_db(DATABASE_NAME);
+$conn->select_db(DB_NAME);
 
 /*******************************
  * Create Tables
