@@ -148,6 +148,17 @@
                        );
                 END;
             SQL;
+        $procedures['getDestinationTagsJoinTagType'] =
+            <<<SQL
+                CREATE PROCEDURE getDestinationTagsJoinTagType(IN _destination_id INT)
+                BEGIN
+                    SELECT tag_id, tag_name, tag_type_id, tag_type_name FROM destination_tag
+                    JOIN tag ON tag.tag_id = destination_tag.tag AND destination_tag.destination = _destination_id
+                    JOIN tag_type ON tag_type.tag_type_id = tag.tag_type
+                    ORDER BY tag_type.tag_type_name;
+                END
+            SQL;
+
         return $procedures;
     }
 ?>

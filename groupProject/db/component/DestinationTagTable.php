@@ -23,12 +23,13 @@ class DestinationTagTable extends Table
         return "destination_tag";
     }
 
-    public function getDestinationTags(mysqli $conn, Destination $destination): array
+
+    public function getDestinationTagsJoinTagType(DBHandler $dbh, Destination $destination): array
     {
+        $conn = $dbh->getNewConn();
         $id = $destination->getId();
-        $result = [];
-        $sql =<<<SQL
-            CALL getDestinationTags(?)
+        $sql = <<<SQL
+            CALL getDestinationTagsJoinTagType(?)
         SQL;
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $id);
@@ -36,8 +37,9 @@ class DestinationTagTable extends Table
         $result = $stmt->get_result()->fetch_all(1);
         $stmt->free_result();
         $stmt->close();
-        var_dump($result);
         if(!$result){return [];}
+        $dbh->getNewConn();
         return $result;
+
     }
 }

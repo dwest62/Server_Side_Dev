@@ -6,17 +6,14 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 
     <?PHP
+    print_r($_POST);
     // Global connection object
     $dbh = new DBHandler(SERVER, USER, PASSWORD, DB_NAME);
-    $conn = $dbh->getConn();
 
     $destinationTable = new DestinationTable();
     $destinationTagTable = new DestinationTagTable();
     $tagTable = new TagTable();
 
-    $currDestination = (isset($_POST['lstDestination']) && !$_POST['lstDestination'] == '0')
-        ? $destinationTable->getById($conn, (int) $_POST['lstDestination'])
-        : new Destination();
 
     $feedback = "";
     if (isset($_POST['frmDestination']['btnSubmit'])) {
@@ -33,34 +30,37 @@
         );
         switch ($_POST['frmDestination']['btnSubmit']) {
             case "add":
-                $feedback = $destinationTable->add($conn, $currDestination)
+                $feedback = $destinationTable->add($dbh, $currDestination)
                     ? "<p class='success'>Successfully added new destination: {$_POST['txtName']} </p>"
-                    : "<p class='failed'>{$destinationTable->getErrMsg($conn, $currDestination->getName())}</p>";
+                    : "<p class='failed'>{$destinationTable->getErrMsg($dbh->getConn(), $currDestination->getName())}</p>";
                 break;
             case "update":
-                $feedback = $destinationTable->update($conn, $currDestination)
+                $feedback = $destinationTable->update($dbh, $currDestination)
                     ? "<p class='success'>Successfully updated destination: {$_POST['txtName']}</p>"
-                    : "<p class='failed'>{$destinationTable->getErrMsg($conn, $currDestination->getName())}</p>";
+                    : "<p class='failed'>{$destinationTable->getErrMsg($dbh->getConn(), $currDestination->getName())}</p>";
                 break;
             case "delete":
-                $feedback = $destinationTable->delete($conn, $currDestination)
+                $feedback = $destinationTable->delete($dbh, $currDestination)
                     ? "<p class='success'>Successfully deleted destination: {$_POST['txtName']}"
-                    : "<p class='failed'>{$destinationTable->getErrMsg($conn, $currDestination->getName())}</p>";
+                    : "<p class='failed'>{$destinationTable->getErrMsg($dbh->getConn(), $currDestination->getName())}</p>";
         }
+
     }
+    $currDestination = (isset($_POST['lstDestination']) && !$_POST['lstDestination'] == '0')
+        ? $destinationTable->getById($dbh, (int) $_POST['lstDestination'])
+        : new Destination();
 
 
     $currTag = (isset($_POST['lstTag']) && !$_POST['lstTag'] == '0')
-        ? $tagTable->getByID($conn, (int) $_POST['lstTag'])
+        ? $tagTable->getByID($dbh, (int) $_POST['lstTag'])
         : new Tag();
 
-    $options = $destinationTable->getOptions($conn);
+    $options = $destinationTable->getOptions($dbh);
 
-    $tagOptions = $destinationTagTable->getDestinationTags($conn, $currDestination);
+    $tagOptions = $destinationTagTable->getDestinationTagsJoinTagType($dbh, $currDestination);
 
 
-    print_r($conn->error_list);
-    $conn->close();
+    $dbh->closeConnection();
     ?>
 </head>
 <body>
@@ -68,7 +68,7 @@
     <?=$feedback?>
     <div id="frame">
         <form action="<?= htmlentities($_SERVER['PHP_SELF']); ?>" method="POST" name="tblEdit" id="tblEdit">
-            <label for="lstDestination"><strong>Select Destination</strong></label>
+            <label for="lstDestination"><strong>Destination</strong></label>
             <select name="lstDestination" id="lstDestination" onChange="this.form.submit()">
                 <option id="destination-0" value="0" >Select a name</option>
                 <?PHP
@@ -83,14 +83,14 @@
                 }
                 ?>
             </select>
-            <a href="<?=htmlentities($_SERVER['PHP_SELF'])?>" onclick="document.getElementById('destination-0').selected = true;">
-                New Record
-            </a>
+                <a href="<?=htmlentities($_SERVER['PHP_SELF'])?>" onclick="document.getElementById('destination-0').selected = true;">
+                        New Record
+                </a>
             <fieldset>
                 <legend>Destination Information</legend>
                 <div class="topLabel">
                     <label for="txtName">Name</label>
-                    <input type="text" name="txtName" id="txtName" value="<?= $currDestination->getName() ?>" />
+                    <input type="text" name="txtName"   id="txtName" value="<?= $currDestination->getName() ?>" />
                 </div>
 
                 <div class="topLabel">
@@ -151,12 +151,17 @@
                     onclick="this.form.submit();">
                 Update
             </button>
-            <select name="lstTag" id="lstTag" onChange="this.form.submit()">
-                <option id="tag-0" value="0" >Select a name</option>
-                <?PHP
+            <br/><br/>
+            <?PHP if($currDestination->getId() != 0):?>
+            <fieldset>
+                <legend>Destination Tags</legend>
+                <label for="lstTag"><strong><?=$currDestination->getName()?> Tags </strong></label>
+                <select name="lstTag" id="lstTag" onChange="this.form.submit()">
+                    <option id="tag-0" value="0" >Select a name</option>
+                    <?PHP
                 foreach ($tagOptions as $option)
                 {
-                    $selected = $currTag->getId() == (int) $option['tag_id'] ? 'selected="true"' : '';
+                $selected = $currTag->getId() == (int) $option['tag_id'] ? 'selected="true"' : '';
                     echo <<<EOF
                             <option value="{$option['tag_id']}" $selected>
                                 {$option['tag_name']}
@@ -165,14 +170,19 @@
                 }
                 ?>
             </select>
-            <fieldset>
-                <legend>Destination Tags</legend>
                 <div class="topLabel">
-                    <label for="txtName">Name</label>
-                    <input type="text" name="txtName" id="txtName" value="<?= $currDestination->getName() ?>" />
+                    <label for="txtTagName">Name</label>
+                    <input type="text" name="txtTagName"   id="txtTagName" value="<?= $currTag->getName() ?>" />
+
+                </div>
+
+                <div class="topLabel">
+                    <label for="txtTagType">Tag Type</label>
+                    <input type="text" name="txtTagType"  id="txtTagType" value="<?= $currTag->getType() == 0 ? "" : $currTag->getType() ?>" />
                 </div>
 
             </fieldset>
+            <?PHP endif;?>
         </form>
     </div>
 </main>

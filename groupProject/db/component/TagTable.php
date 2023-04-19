@@ -21,18 +21,22 @@ class TagTable extends Table
         return "tag";
     }
 
-    public function getById(mysqli $conn, int $id): Tag
+    public function getById(DBHandler $dbh, int $id): Tag
     {
-        $thisID = $id;
+        $conn = $dbh->getNewConn();
         $sql =<<<SQL
-            SELECT * FROM Tag WHERE tag_id={$id}
+            SELECT * FROM Tag WHERE tag_id=?
         SQL;
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = $result->fetch_all(1);
+        $stmt->free_result();
+        $stmt->close();
+        $dbh->getNewConn();
 
-        $data = $conn->query($sql)->fetch_all(1);
-
-
-
-        return new Tag($data[0]['tag_id'], $data[0]['tag_type'], $data[0]['tag_name']);;
+        return new Tag($data[0]['tag_id'], $data[0]['tag_type'], $data[0]['tag_name'], "");
     }
 
 
