@@ -19,9 +19,5 @@ class TagTypeTable extends Table
         return "tag_type";
     }
 
-    public function listOptions(mysqli $conn): array
-    {
-        // TODO: Implement listOptions() method.
-    }
 
 }

@@ -23,4 +23,21 @@ class DestinationTagTable extends Table
         return "destination_tag";
     }
 
+    public function getDestinationTags(mysqli $conn, Destination $destination): array
+    {
+        $id = $destination->getId();
+        $result = [];
+        $sql =<<<SQL
+            CALL getDestinationTags(?)
+        SQL;
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_all(1);
+        $stmt->free_result();
+        $stmt->close();
+        var_dump($result);
+        if(!$result){return [];}
+        return $result;
+    }
 }

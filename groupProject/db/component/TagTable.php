@@ -21,5 +21,19 @@ class TagTable extends Table
         return "tag";
     }
 
+    public function getById(mysqli $conn, int $id): Tag
+    {
+        $thisID = $id;
+        $sql =<<<SQL
+            SELECT * FROM Tag WHERE tag_id={$id}
+        SQL;
+
+        $data = $conn->query($sql)->fetch_all(1);
+
+
+
+        return new Tag($data[0]['tag_id'], $data[0]['tag_type'], $data[0]['tag_name']);;
+    }
+
 
 }

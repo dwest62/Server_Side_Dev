@@ -50,12 +50,16 @@ class DestinationTable extends Table
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
-        $data = $result->fetch_assoc();
+        $data = $result->fetch_all(1);
         $result->free();
+        while($conn->next_result()){
+            echo "here";
+            if($result = $conn->store_result()){$result->free();}
+        }
         $stmt->close();
         if($data) {
-            return new Destination($data['destination_id'], $data['destination_name'], $data['destination_desc'], $data['zip'],
-                $data['line_1'], $data['line_2'], $data['city'], $data['image_url'], $data['website']);
+            return new Destination($data[0]['destination_id'], $data[0]['destination_name'], $data[0]['destination_desc'], $data[0]['zip'],
+                $data[0]['line_1'], $data[0]['line_2'], $data[0]['city'], $data[0]['image_url'], $data[0]['website']);
         } else {
             return new Destination();
         }
@@ -65,24 +69,35 @@ class DestinationTable extends Table
         $result = $conn->query("SELECT destination_id, destination_name FROM destination ORDER BY destination_name");
         if(!$result)
         {
-            echo $conn->error;
+            echo "<br>Destination table options error: $conn->error";
             return [];
-        } else {
-            $data = $result->fetch_all(1);
-            $result->free();
         }
-
-        return $data;
+        return $result->fetch_all(1);
     }
     public function update(mysqli $conn, Destination $destination): bool
     {
         $desc = addslashes($destination->getDescription());
         $sql =<<<SQL
-        CALL updateDestination({$destination->getId()},'{$destination->getName()}', '{$desc}', '{$destination->getImageUrl()}', 
-            '{$destination->getWebsite()}', '{$destination->getZip()}', '{$destination->getLine1()}', '{$destination->getLine2()}', 
-            '{$destination->getCity()}')
+        CALL updateDestination(?,?,?,?,?,?,?,?,?)
         SQL;
-        return $conn->query($sql);
+
+        $stmt = $conn->prepare($sql);
+        $id = $destination->getId();
+        $name = $destination->getName();
+        $imageUrl = $destination->getImageUrl();
+        $website = $destination->getWebsite();
+        $zip = $destination->getZip();
+        $line1 = $destination->getLine1();
+        $line2 = $destination->getLine2();
+        $city = $destination->getCity();
+        $success = false;
+
+        $stmt->bind_param("sssssssss", $id, $name, $desc, $imageUrl, $website, $zip, $line1, $line2, $city);
+        $stmt->execute();
+        $stmt->bind_result($success);
+        $stmt->free_result();
+        $stmt->close();
+        return $success;
     }
     public function delete(mysqli $conn, Destination $destination): bool
     {

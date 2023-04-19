@@ -19,6 +19,9 @@ require_once "../../db/component/Table.php";
 require_once "../../db/component/DestinationTable.php";
 require_once "../../db/component/Destination.php";
 require_once "../../db/component/DBHandler.php";
+require_once "../../db/component/DestinationTagTable.php";
+require_once "../../db/component/Tag.php";
+require_once "../../db/component/TagTable.php";
 include "component/destinationForm.php";
 ?>
 </body>

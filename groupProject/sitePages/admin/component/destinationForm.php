@@ -11,15 +11,16 @@
     $conn = $dbh->getConn();
 
     $destinationTable = new DestinationTable();
+    $destinationTagTable = new DestinationTagTable();
+    $tagTable = new TagTable();
 
-    $destination = (isset($_POST['lstDestination']) && !$_POST['lstDestination'] == "0")
+    $currDestination = (isset($_POST['lstDestination']) && !$_POST['lstDestination'] == '0')
         ? $destinationTable->getById($conn, (int) $_POST['lstDestination'])
         : new Destination();
 
-    print_r($_POST);
     $feedback = "";
     if (isset($_POST['frmDestination']['btnSubmit'])) {
-        $destination = new Destination(
+        $currDestination = new Destination(
             (int)$_POST['txtID'],
             $_POST['txtName'],
             $_POST['txtDescription'],
@@ -32,24 +33,34 @@
         );
         switch ($_POST['frmDestination']['btnSubmit']) {
             case "add":
-                $feedback = $destinationTable->add($conn, $destination)
+                $feedback = $destinationTable->add($conn, $currDestination)
                     ? "<p class='success'>Successfully added new destination: {$_POST['txtName']} </p>"
-                    : "<p class='failed'>{$destinationTable->getErrMsg($conn, $destination->getName())}</p>";
+                    : "<p class='failed'>{$destinationTable->getErrMsg($conn, $currDestination->getName())}</p>";
                 break;
             case "update":
-                $feedback = $destinationTable->update($conn, $destination)
+                $feedback = $destinationTable->update($conn, $currDestination)
                     ? "<p class='success'>Successfully updated destination: {$_POST['txtName']}</p>"
-                    : "<p class='failed'>{$destinationTable->getErrMsg($conn, $destination->getName())}</p>";
+                    : "<p class='failed'>{$destinationTable->getErrMsg($conn, $currDestination->getName())}</p>";
                 break;
             case "delete":
-                $feedback = $destinationTable->delete($conn, $destination)
+                $feedback = $destinationTable->delete($conn, $currDestination)
                     ? "<p class='success'>Successfully deleted destination: {$_POST['txtName']}"
-                    : "<p class='failed'>{$destinationTable->getErrMsg($conn, $destination->getName())}</p>";
+                    : "<p class='failed'>{$destinationTable->getErrMsg($conn, $currDestination->getName())}</p>";
         }
     }
 
+
+    $currTag = (isset($_POST['lstTag']) && !$_POST['lstTag'] == '0')
+        ? $tagTable->getByID($conn, (int) $_POST['lstTag'])
+        : new Tag();
+
     $options = $destinationTable->getOptions($conn);
 
+    $tagOptions = $destinationTagTable->getDestinationTags($conn, $currDestination);
+
+
+    print_r($conn->error_list);
+    $conn->close();
     ?>
 </head>
 <body>
@@ -63,7 +74,7 @@
                 <?PHP
                 foreach ($options as $option)
                 {
-                    $selected = $destination->getId() == (int) $option['destination_id'] ? 'selected="true"' : '';
+                    $selected = $currDestination->getId() == (int) $option['destination_id'] ? 'selected="true"' : '';
                     echo <<<EOF
                             <option value="{$option['destination_id']}" $selected >
                                 {$option['destination_name']}
@@ -79,46 +90,46 @@
                 <legend>Destination Information</legend>
                 <div class="topLabel">
                     <label for="txtName">Name</label>
-                    <input type="text" name="txtName" id="txtName" value="<?= $destination->getName() ?>" />
+                    <input type="text" name="txtName" id="txtName" value="<?= $currDestination->getName() ?>" />
                 </div>
 
                 <div class="topLabel">
                     <label for="txtImg">Image URL</label>
-                    <input type="text" name="txtImg"   id="txtImg" value="<?= $destination->getImageUrl() ?>" />
+                    <input type="text" name="txtImg"   id="txtImg" value="<?= $currDestination->getImageUrl() ?>" />
                 </div>
 
                 <div class="topLabel">
                     <label for="txtWebsite">Website</label>
-                    <input type="text" name="txtWebsite"   id="txtWebsite" value="<?= $destination->getWebsite() ?>" />
+                    <input type="text" name="txtWebsite"   id="txtWebsite" value="<?= $currDestination->getWebsite() ?>" />
                 </div>
 
                 <div class="topLabel">
                     <label for="txtLineOne">Address Line 1</label>
-                    <input type="text" name="txtLineOne"   id="txtLineOne" value="<?= $destination->getLine1() ?>" />
+                    <input type="text" name="txtLineOne"   id="txtLineOne" value="<?= $currDestination->getLine1() ?>" />
                 </div>
 
                 <div class="topLabel">
                     <label for="txtLineTwo">Address Line 2</label>
-                    <input type="text" name="txtLineTwo"   id="txtLineTwo" value="<?= $destination->getLine2() ?>" />
+                    <input type="text" name="txtLineTwo"   id="txtLineTwo" value="<?= $currDestination->getLine2() ?>" />
                 </div>
 
                 <div class="topLabel">
                     <label for="txtCity">City</label>
-                    <input type="text" name="txtCity"   id="txtCity" value="<?= $destination->getCity() ?>" />
+                    <input type="text" name="txtCity"   id="txtCity" value="<?= $currDestination->getCity() ?>" />
                 </div>
 
                 <div class="topLabel">
                     <label for="txtZip">Zip Code</label>
-                    <input type="text" name="txtZip"   id="txtZip" value="<?= $destination->getZip() ?>" />
+                    <input type="text" name="txtZip"   id="txtZip" value="<?= $currDestination->getZip() ?>" />
                 </div>
 
                 <div class="topLabel">
                     <label for="txtDescription">Description</label>
-                    <input type="text" name="txtDescription"   id="txtDescription"
-                           value="<?= $destination->getDescription()?>" size="<?= $destination->getLen()?>"
+                    <input type="text" name="txtDescription" id="txtDescription"
+                           value="<?= $currDestination->getDescription()?>" size="<?= $currDestination->getLen()?>"
                            maxlength="5000" />
                 </div>
-                <input type="hidden" name="txtID" id="txtID" value="<?= $destination->getId()?>">
+                <input type="hidden" name="txtID" id="txtID" value="<?= $currDestination->getId()?>">
             </fieldset>
             <button name="frmDestination[btnSubmit]"
                     value="delete"
@@ -140,6 +151,28 @@
                     onclick="this.form.submit();">
                 Update
             </button>
+            <select name="lstTag" id="lstTag" onChange="this.form.submit()">
+                <option id="tag-0" value="0" >Select a name</option>
+                <?PHP
+                foreach ($tagOptions as $option)
+                {
+                    $selected = $currTag->getId() == (int) $option['tag_id'] ? 'selected="true"' : '';
+                    echo <<<EOF
+                            <option value="{$option['tag_id']}" $selected>
+                                {$option['tag_name']}
+                            </option>
+                        EOF;
+                }
+                ?>
+            </select>
+            <fieldset>
+                <legend>Destination Tags</legend>
+                <div class="topLabel">
+                    <label for="txtName">Name</label>
+                    <input type="text" name="txtName" id="txtName" value="<?= $currDestination->getName() ?>" />
+                </div>
+
+            </fieldset>
         </form>
     </div>
 </main>
