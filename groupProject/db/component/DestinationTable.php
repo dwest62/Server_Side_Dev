@@ -30,7 +30,7 @@ class DestinationTable extends Table
 
     public function add(DBHandler $dbh, Destination $destination): bool
     {
-        $conn = $dbh->getNewConn();
+        $conn = $dbh->resetConn();
         $sql = <<<SQL
             CALL addDestination(?, ?, ?, ?, ?, ?, ?, ?)
         SQL;
@@ -51,13 +51,13 @@ class DestinationTable extends Table
         $stmt->bind_param("ssssssss", $name, $desc, $img, $web, $zip, $l1, $l2, $city);
         $stmt->execute();
         $stmt->close();
-        $dbh->getNewConn();
+        $dbh->resetConn();
         return true;
     }
 
     public function getById(DBHandler $dbh, int $id): Destination
     {
-        $conn = $dbh->getNewConn();
+        $conn = $dbh->resetConn();
         $stmt = $conn->prepare(
             <<<SQL
             SELECT *, LENGTH(destination_desc) AS 'len' FROM destination WHERE destination_id = ?
@@ -68,7 +68,7 @@ class DestinationTable extends Table
         $result = $stmt->get_result();
         $data = $result->fetch_assoc();
         $stmt->close();
-        $dbh->getNewConn();
+        $dbh->resetConn();
         if($data) {
             return new Destination($data['destination_id'], $data['destination_name'], $data['destination_desc'], $data['zip'],
                 $data['line_1'], $data['line_2'], $data['city'], $data['image_url'], $data['website']);
@@ -89,7 +89,7 @@ class DestinationTable extends Table
     }
     public function update(DBHandler $dbh, Destination $destination): bool
     {
-        $conn = $dbh->getNewConn();
+        $conn = $dbh->resetConn();
         $desc = addslashes($destination->getDescription());
         $sql =<<<SQL
             CALL updateDestination(?,?,?,?,?,?,?,?,?)
@@ -113,7 +113,7 @@ class DestinationTable extends Table
         }
         $stmt->execute();
         $stmt->close();
-        $dbh->getNewConn();
+        $dbh->resetConn();
         return true;
     }
     public function delete(DBHandler $dbh, Destination $destination): bool

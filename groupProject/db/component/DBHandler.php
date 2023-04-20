@@ -93,7 +93,7 @@ class DBHandler
         return $this->conn;
     }
 
-    public function getNewConn(): mysqli
+    public function resetConn(): mysqli
     {
         if($this->isConnected())
         {

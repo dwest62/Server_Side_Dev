@@ -22,6 +22,8 @@ require_once "../../db/component/DBHandler.php";
 require_once "../../db/component/DestinationTagTable.php";
 require_once "../../db/component/Tag.php";
 require_once "../../db/component/TagTable.php";
+require_once "../../db/component/TagTypeTable.php";
+require_once "../../db/component/TagType.php";
 include "component/destinationForm.php";
 ?>
 </body>

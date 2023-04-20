@@ -19,6 +19,7 @@ class Tag
         $this->tag_name = $name;
     }
 
+
     /**
      * @return int
      */
