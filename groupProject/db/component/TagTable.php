@@ -19,10 +19,11 @@ class TagTable extends Table
 
     public static function getAllTagsJoinTagTypeName(DBHandler $dbh): array
     {
-        $conn = $dbh->resetConn();
+        $dbh->openConnection();
+        $conn = $dbh->getConn();
         $sql = <<<SQL
             SELECT destination, tag_id, tag_name, tag_type_id, tag_type_name FROM destination_tag
-            JOIN tag ON tag.tag_id = destination_tag.tag
+            RIGHT JOIN tag ON tag.tag_id = destination_tag.tag
             JOIN tag_type ON tag_type.tag_type_id = tag.tag_type
             ORDER BY tag_type.tag_type_name;
         SQL;
@@ -34,7 +35,6 @@ class TagTable extends Table
         if (!$result) {
             return [];
         }
-        $dbh->resetConn();
         return $result;
     }
 
@@ -78,12 +78,15 @@ class TagTable extends Table
     }
 
     public static function addTag(DBHandler $dbh, string $name, int $type): bool {
+        echo $name . $type;
         $dbh->openConnection();
         $sql = <<<SQL
-            INSERT INTO tag(tag.tag_name, tag.type) VALUES (?,?)
+            INSERT INTO tag(tag.tag_name, tag.tag_type) VALUES (?,?)
         SQL;
+        $conn = $dbh->getConn();
         $stmt = $dbh->getConn()->prepare($sql);
-        if($stmt->error) {
+        if(!$stmt) {
+            echo $conn->error;
             return false;
         }
         $stmt->bind_param("si", $name, $type);
@@ -94,14 +97,16 @@ class TagTable extends Table
     public static function updateTag(DBHandler $dbh, int $id, string $name, int $type): bool {
         $dbh->openConnection();
         $sql = <<<SQL
-            UPDATE tag SET tag.tag_name = ?, tag.type = ? WHERE tag.tag_id = ?
+            UPDATE tag SET tag.tag_name = ?, tag.tag_type = ? WHERE tag.tag_id = ?
         SQL;
+        $conn = $dbh->getConn();
         $stmt = $dbh->getConn()->prepare($sql);
-        if($stmt->error) {
+        if(!$stmt) {
+            echo $conn->error;
             return false;
         }
         $stmt->bind_param("sii",$name, $type, $id);
-        $stmt->execute();
+        echo $stmt->execute();
         $stmt->close();
         return true;
     }

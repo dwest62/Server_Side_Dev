@@ -26,8 +26,14 @@ class TagTypeTable extends Table
         return $dbh->getConn()->query($sql)->fetch_all(1);
     }
 
-    public static function getTagTypeById(int $id): TagType {
-        $sql = "SELECT FROM "
+    public static function getTagTypeById(array $types, int $id): TagType {
+        foreach ($types as $type) {
+            if( (int) $type['tag_type_id'] == $id)
+            {
+                return new TagType((int) $type['tag_type_id'], $type['tag_type_name']);
+            }
+        }
+
         return new TagType();
     }
 

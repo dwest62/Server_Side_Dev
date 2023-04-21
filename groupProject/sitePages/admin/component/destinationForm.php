@@ -53,27 +53,34 @@
                 case "add":
                     if (isset($_POST['inactiveTags']) && count($_POST['inactiveTags']) > 0) {
                         $feedback = DestinationTagTable::addTagsToDestination($dbh, $_POST["inactiveTags"], $_POST['lstDestination'])
-                            ? "<p class='success'>Successfully added tags"
-                            : "<p class='failed'>Failed to add tags: {$dbh->getConn()->error}</p>";;
+                            ? "<p class='success'>Successfully added tags to destination"
+                            : "<p class='failed'>Failed to add tags to destination: {$dbh->getConn()->error}</p>";
                     }
                     break;
                 case "remove":
                     if (isset($_POST['activeTags']) && count($_POST['activeTags']) > 0) {
                         $feedback = DestinationTagTable::removeTagsFromDestination($dbh, $_POST["activeTags"], $_POST['lstDestination'])
-                            ? "<p class='success'>Successfully added tags"
-                            : "<p class='failed'>Failed to add tags: {$dbh->getConn()->error}</p>";
+                            ? "<p class='success'>Successfully removed tags from destination"
+                            : "<p class='failed'>Failed to remove tags from destination: {$dbh->getConn()->error}</p>";
                     }
                     break;
             }
-        } elseif (isset($_POST['btnSubmit']['tag']))
-        {
-            switch($_POST['btnSubmit']['tag']) {
+        } elseif (isset($_POST['btnSubmit']['tag'])) {
+            switch ($_POST['btnSubmit']['tag']) {
                 case "add":
-                    TagTable::addTag($dbh, $_POST['txtTagName'], (int) $_POST['lstTagType']);
-                    break;
-                case "delete":
+                    $feedback = TagTable::addTag($dbh, $_POST['txtTagName'], (int)$_POST['lstTagTypeId'])
+                        ? "<p class='success'>Successfully added tag"
+                        : "<p class='failed'>Failed to add tag: {$dbh->getConn()->error}</p>";
                     break;
                 case "update":
+                    $feedback = TagTable::updateTag($dbh, (int) $_POST['lstTag'], $_POST['txtTagName'], (int)$_POST['lstTagTypeId'], )
+                        ? "<p class='success'>Successfully added tag"
+                        : "<p class='failed'>Failed to add tag: {$dbh->getConn()->error}</p>";
+                    break;
+                case "delete":
+                    $feedback = TagTable::deleteTag($dbh, $_POST['lstTag'])
+                        ? "<p class='success'>Successfully deleted tag"
+                        : "<p class='failed'>Failed to delete tag: {$dbh->getConn()->error}</p>";
                     break;
             }
         }
@@ -102,12 +109,19 @@
     // Get all tag types
     $tagTypes = TagTypeTable::getTagTypes($dbh);
 
-    $currTagType = (isset($_POST['lstTagTypeId']))
-        ? TagTypeTable::getTagTypeById($_POST['lstTagTypeId'])
+    $currTagType = $currTag->getType()
+        ? new TagType($currTag->getType(), $currTag->getTagTypeName())
         : new TagType();
 
     $dbh->closeConnection();
     ?>
+    <script>
+        function clearTagForm(){
+            document.getElementById("tag-0").selected = true;
+            document.getElementById("txtTagName").value = "";
+            document.getElementById("tagType-0").selected = true;
+        }
+    </script>
 </head>
 <body>
 <main>
@@ -217,11 +231,11 @@
                     <?PHP $size = array_sum(array_map("count", $tagOptions["active"])) + count($tagOptions["active"]) ?>
                     <select name="activeTags[]" id="activeTags[]" multiple="multiple" size="<?= $size ?>">
                         <?PHP foreach ($tagOptions["active"] as $type => $tags): ?>
-                            <optgroup label="<?= $type ?>">
-                                <?PHP foreach ($tags as $tag): ?>
-                                    <option value="<?= $tag['tag_id'] ?>"><?= $tag['tag_name'] ?></option>
-                                <?PHP endforeach; ?>
-                            </optgroup>
+                        <optgroup label="<?= $type ?>">
+                            <?PHP foreach ($tags as $tag): ?>
+                            <option value="<?= $tag['tag_id'] ?>"><?= $tag['tag_name'] ?></option>
+                            <?PHP endforeach; ?>
+                        </optgroup>
                         <?PHP endforeach; ?>
                     </select>
 
@@ -255,18 +269,17 @@
             <label for="lstTag"><strong>Tag</strong></label>
             <select name="lstTag" id="lstTag" onChange="this.form.submit()">
                 <option id="tag-0" value="0">Select a tag</option>
-                <?PHP foreach($tagOptions['all'] as $type => $tags): ?>
-                <optgroup label="<?=$type?>">
-                    <?PHP foreach($tags as $tag): ?>
-                    <option value="<?=$tag['tag_id']?>" <?= $currTag->getId() == (int) $tag['tag_id'] ? "selected" : ''; ?>>
-                        <?=$tag['tag_name']?>
-                    </option>
-                    <?PHP endforeach;?>
-                </optgroup>
+                <?PHP foreach ($tagOptions['all'] as $type => $tags): ?>
+                    <optgroup label="<?= $type ?>">
+                    <?PHP foreach ($tags as $tag): ?>
+                        <option value="<?= $tag['tag_id'] ?>" <?= $currTag->getId() == (int)$tag['tag_id'] ? "selected" : ''; ?>>
+                            <?= $tag['tag_name'] ?>
+                        </option>
+                    <?PHP endforeach; ?>
+                    </optgroup>
                 <?PHP endforeach; ?>
             </select>
-            <a href="<?= htmlentities($_SERVER['PHP_SELF']) ?>"
-               onclick="document.getElementById('tag-0').selected = true;">
+            <a href="javascript:clearTagForm();">
                 New Record
             </a>
             <fieldset>
@@ -280,10 +293,11 @@
                 <!-- Tag types -->
                 <label for="lstTagTypeId">Select Type</label>
                 <select name="lstTagTypeId" id="lstTagTypeId">
-                    <?PHP foreach($tagTypes as $type): ?>
-                        <option value="<?=$type['tag_type_id']?>"
-                                <?=$currTagType->getId() == $type['tag_type_id'] ? "selected" : ""?>>
-                            <?=$type['tag_type_name']?>
+                    <option id="tagType-0" value="0">Select a tag type</option>
+                    <?PHP foreach ($tagTypes as $type): ?>
+                        <option value="<?= $type['tag_type_id'] ?>"
+                            <?= $currTagType->getId() == $type['tag_type_id'] ? "selected" : "" ?>>
+                            <?= $type['tag_type_name'] ?>
                         </option>
                     <?PHP endforeach; ?>
                 </select>
@@ -293,12 +307,12 @@
                     Delete Tag
                 </button>
                 <button name="btnSubmit[tag]"
-                        value="delete"
+                        value="add"
                         onclick="this.form.submit();">
                     Add new Tag
                 </button>
                 <button name="btnSubmit[tag]"
-                        value="delete"
+                        value="update"
                         onclick="this.form.submit();">
                     Update Tag
                 </button>
