@@ -69,7 +69,7 @@
         {
             switch($_POST['btnSubmit']['tag']) {
                 case "add":
-                    TagTable::addTag($dbh, $_POST['txtTagName'], (int) $_POST['txtTagId'], (int) $_POST['lstTagType']);
+                    TagTable::addTag($dbh, $_POST['txtTagName'], (int) $_POST['lstTagType']);
                     break;
                 case "delete":
                     break;
@@ -102,8 +102,8 @@
     // Get all tag types
     $tagTypes = TagTypeTable::getTagTypes($dbh);
 
-    $currTagType = (isset($_POST['lstTagType']))
-        ? TagTypeTable::getTagTypeById($tagTypes, $_POST['lstTagType'])
+    $currTagType = (isset($_POST['lstTagTypeId']))
+        ? TagTypeTable::getTagTypeById($_POST['lstTagTypeId'])
         : new TagType();
 
     $dbh->closeConnection();
@@ -278,8 +278,8 @@
                 </div>
 
                 <!-- Tag types -->
-                <label for="lstTagType">Select Type</label>
-                <select name="lstTagType" id="lstTagType" onChange="this.form.submit()">
+                <label for="lstTagTypeId">Select Type</label>
+                <select name="lstTagTypeId" id="lstTagTypeId">
                     <?PHP foreach($tagTypes as $type): ?>
                         <option value="<?=$type['tag_type_id']?>"
                                 <?=$currTagType->getId() == $type['tag_type_id'] ? "selected" : ""?>>
@@ -287,7 +287,6 @@
                         </option>
                     <?PHP endforeach; ?>
                 </select>
-                <input type="hidden" name="txtTagId" id="txtTagId" value="<?= $currTag->getId() ?>">
                 <button name="btnSubmit[tag]"
                         value="delete"
                         onclick="this.form.submit();">
@@ -305,7 +304,6 @@
                 </button>
             </fieldset>
             <input type="hidden" name="lstDestination" id="lstDestination" value="<?= $currDestination->getId() ?>">
-            <input type="hidden" name="lstTag" id="lstTag" value="<?=$currTag->getId()?>">
         </form>
     </div>
 </main>
