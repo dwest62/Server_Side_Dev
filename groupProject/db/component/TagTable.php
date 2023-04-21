@@ -11,7 +11,8 @@ class TagTable extends Table
                 tag_type int,
                 tag_name varchar(30) NOT NULL,
                 PRIMARY KEY (tag_id),
-                FOREIGN KEY (tag_type) REFERENCES tag_type(tag_type_id) ON DELETE CASCADE
+                FOREIGN KEY (tag_type) REFERENCES tag_type(tag_type_id) ON DELETE CASCADE,
+                UNIQUE KEY `unique_type_name` (tag_type, tag_name)
             )
         SQL;
         return $conn->query($sql);
@@ -78,7 +79,6 @@ class TagTable extends Table
     }
 
     public static function addTag(DBHandler $dbh, string $name, int $type): bool {
-        echo $name . $type;
         $dbh->openConnection();
         $sql = <<<SQL
             INSERT INTO tag(tag.tag_name, tag.tag_type) VALUES (?,?)
