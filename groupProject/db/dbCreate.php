@@ -28,7 +28,7 @@
         const DB_NAME = "dbTravelMinnesota";
 
         $startData = json_decode(file_get_contents("data.json", true), true);
-        $dbh = new DBHandler("localhost", "root", "mysql", NULL);
+        $dbh = new DBHandler(SERVER, USER, PASSWORD, NULL);
         $tables = [new DestinationTable(), new TagTypeTable(), new TagTable(), new DestinationTagTable()];
 
 
