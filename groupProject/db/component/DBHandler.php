@@ -59,11 +59,12 @@ class DBHandler
     {
 
         $sql = "CREATE DATABASE IF NOT EXISTS $dbName";
+        $result = $this->conn->query($dbName);
         if(!$this->conn->error)
         {
             $this->conn->select_db($dbName);
         }
-        return $this->conn->query($sql);
+        return $result;
     }
 
     public function databaseExists(string $dbName): bool
