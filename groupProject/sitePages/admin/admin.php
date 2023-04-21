@@ -18,7 +18,7 @@
     require_once "../../db/component/TagType.php";
 
     // Global connection object
-    $dbh = new DBHandler(SERVER, USER, PASSWORD, DB_NAME);
+    $dbh = new DBHandler(SERVER, USER, PASSWORD, "dbtravelminnesota");
 
     // Initialize table objects
     $destinationTable = new DestinationTable();
