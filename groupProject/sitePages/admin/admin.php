@@ -106,6 +106,9 @@
                         : "<p class='failed'>Failed to add tag type: {$dbh->getConn()->error}</p>";
                     break;
                 case "delete":
+                    $feedback = TagTypeTable::deleteTagType($dbh, (int)$_POST['lstTagType'])
+                        ? "<p class='success'>Tag Type deleted"
+                        : "<p class='failed'>Failed to delete tag type: {$dbh->getConn()->error}</p>";
                     break;
             }
         }
@@ -134,7 +137,7 @@
     // Get all tag types
     $tagTypes = TagTypeTable::getTagTypes($dbh);
 
-    $currTagType = (isset($_POST['lstTagType']) && !$_POST['lstTagType'] == '0')
+    $currTagType = (isset($_POST['lstTagType']) && !$_POST['lstTagType'] == '0' && !isset($_POST['btnSubmit']['tagType']))
         ? TagTypeTable::getTagTypeById($tagTypes, $_POST['lstTagType'])
         : new TagType();
 

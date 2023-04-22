@@ -59,7 +59,7 @@ class DBHandler
     {
 
         $sql = "CREATE DATABASE IF NOT EXISTS $dbName";
-        $result = $this->conn->query($dbName);
+        $result = $this->conn->query($sql);
         if(!$this->conn->error)
         {
             $this->conn->select_db($dbName);
@@ -70,6 +70,8 @@ class DBHandler
     public function databaseExists(string $dbName): bool
     {
         $sql = "SELECT schema_name FROM information_schema.schemata WHERE SCHEMA_NAME LIKE '$dbName'";
+        $result = $this->conn->query($sql);
+        var_dump($result);
         return $this->conn->query($sql)->num_rows;
     }
 
