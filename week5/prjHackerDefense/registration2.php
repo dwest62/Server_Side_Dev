@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <!-- registration.php - Register new racers - edit, delete
       James West
-      Written:  Current Date
-      Revised:
+      Written:  4/22/23
+      Revised: 4/22/23
       Source: Modeled from Concordia St. Paul University - CSC 235 Server-Side Development Lesson 6 Module
       -->
     <title>SunRun Registration</title>
@@ -22,8 +22,6 @@
     // Global connection object
     $conn = new mysqli(SERVER_NAME, DBF_USER_NAME, DBF_PASSWORD, DATABASE_NAME);
 
-    // Link to external library file
-    //echo "PATH (Current Working Directory): " . getcwd( ) . "sunRunLib.php" . "<br />";
     require_once(getcwd() . "/sunRunLib.php");
     // Connect to database
     createConnection();
@@ -71,25 +69,29 @@
                 // DELETE
                 // = = = = = = = = = = = = = = = = = = =
                 case 'delete':
-                    //displayMessage("DELETE button pushed.", "green");
 
                     //Make sure a runner has been selected.
                     if ($_POST["txtFName"] == "") {
                         displayMessage("Please select a runner's name.", "red");
                     } else {
-                        // Verify the DELETE using a SELECT first
-                        //$sql = "SELECT * FROM runner WHERE id_runner = " . $thisRunner["id_runner"];
-                        //$result = $conn->query($sql);
-                        //displayResult($result, $sql);
-                        //echo "<br />";
                         $sql = "DELETE FROM runner WHERE id_runner = " . $thisRunner["id_runner"];
                         $result = $conn->query($sql);
+
+
                         // Remove any records in Table:sponsor
-                        $sql = "DELETE FROM sponsor WHERE id_runner = " . $thisRunner["id_runner"];
-                        $result = $conn->query($sql);
+//                        $sql = "DELETE FROM sponsor WHERE id_runner = " . $thisRunner["id_runner"];
+//                        $result = $conn->query($sql);
+
+                        $sql = <<<SQL
+                            DELETE FROM sponsor WHERE id_runner = ?;
+                        SQL;
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bind_param("i", $thisRunner['id_runner']);
+                        $result = $stmt->execute();
                         if ($result) {
                             displayMessage($thisRunner['fName'] . " " . $thisRunner['lName'] . " deleted.", "green");
                         }
+                        $stmt->close();
                     } // end of if($_POST[txtFName])
                     clearThisRunner();
                     break;
@@ -106,17 +108,15 @@
                                 AND phone = $unfrmtPhone
                             SQL;
                     $result = $conn->query($sql);
-                    $row=$result->fetch_assoc();
+                    $row = $result->fetch_assoc();
 
-                    if($row['total'] > 0) {
+                    if ($row['total'] > 0) {
                         displayMessage('This runner is already registered', 'red');
-                    }
-                    else {
+                    } else {
                         // Check for empty name fields or phone
-                        if ($_POST['txtFName']== "" || $_POST['txtLName']== "" || $_POST['txtPhone']=="") {
+                        if ($_POST['txtFName'] == "" || $_POST['txtLName'] == "" || $_POST['txtPhone'] == "") {
                             displayMessage("Please type in a first and last name and a phone number.", "red");
-                        }
-                        // First name and last name are populated
+                        } // First name and last name are populated
                         else {
                             $sql = "INSERT INTO runner (id_runner, fName, lName, phone, gender)
                             VALUES (NULL, '"
@@ -126,25 +126,109 @@
                                 . $_POST['lstGender'] . "')";
                             $result = $conn->query($sql);
 
-                            $sql = "INSERT INTO sponsor (id_sponsor, sponsorName, id_runner) 
-                            VALUES (NULL,'" . $_POST['txtSponsor'] . "', 
-                              (SELECT id_runner 
-                                 FROM runner 
-                                 WHERE fName='" . $_POST['txtFName'] . "' 
-                                 AND lName='" . $_POST['txtLName'] . "'
-                               )
-                            )";
-                            $result = $conn->query($sql);
+                            // My preferred way
+                            $sql = <<<SQL
+                                INSERT INTO sponsor (id_sponsor, sponsorName, id_runner)
+                                VALUES (NULL, ?,
+                                    (SELECT id_runner FROM runner WHERE fName = ? AND lName = ?)
+                                )
+                            SQL;
+
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bind_param("sss", $_POST['txtSponsor'], $_POST['txtFName'], $_POST['txtLName']);
+                            $result = $stmt->execute();
+                            $stmt->close();
+
+                            // What you were maybe looking for?
+//                            $stmt1 = $conn->prepare("SELECT id_runner FROM runner WHERE fName = ? AND lName = ?");
+//                            $stmt1->bind_param("ss", $_POST['txtFName'], $_POST['txtLName']);
+//                            $stmt1->execute();
+//                            $stmt1->store_result();
+//                            $stmt1->bind_result($tempId);
+//                            $stmt1->fetch();
+//                            $stmt1->free_result();
+//                            $stmt1->close();
+//                            $sql = <<<SQL
+//                                INSERT INTO sponsor (id_sponsor, sponsorName, id_runner)
+//                                VALUES (NULL, ?, ?)
+//                            SQL;
+//
+//                            $stmt2 = $conn->prepare($sql);
+//                            $stmt2->bind_param("si", $_Post['txtSponsor'], $tempId);
+//                            $stmt2->execute();
+//                            $stmt2->close();
                         }
                     }
                     clearThisRunner();
                     break;
 
-                // = = = = = = = = = = = = = = = = = = =
-                // UPDATE
-                // = = = = = = = = = = = = = = = = = = =
+// = = = = = = = = = = = = = = = = = = =
+// UPDATE
+// = = = = = = = = = = = = = = = = = = =
                 case 'update':
-                    displayMessage("UPDATE button pushed.", "green");
+                    //displayMessage("UPDATE button pushed.", "green");
+                    // Check for empty name
+                    if ($_POST['txtFName'] == "" || $_POST['txtLName'] == "") {
+                        displayMessage("Please select a runner's name.", "red");
+                    } // First name and last name are selected
+                    else {
+                        $isSuccessful = false;
+                        // Update Table:runner
+
+//                        $sql = "UPDATE runner SET fName='" . $_POST['txtFName'] . "', "
+//                            . " lName = '" . $_POST['txtLName'] . "', "
+//                            . " phone = '" . unformatPhone($_POST['txtPhone']) . "', "
+//                            . " gender = '" . $_POST['lstGender'] . "'
+//                            WHERE id_runner = " . $thisRunner['id_runner'];
+
+                        $conn->close();
+                        createConnection();
+                        $ufPhone = unFormatPhone($_POST['txtPhone']);
+                        $sql = "CALL runnerUpdate(?,?,?,?,?)";
+                        $stmt = $conn->prepare($sql);
+
+                        $stmt->bind_param(
+                            "issss",
+                            $thisRunner['id_runner'],
+                            $_POST['txtFName'],
+                            $_POST['txtLName'],
+                            $_POST['lstGender'],
+                            $ufPhone
+                        );
+                        $result = $stmt->execute();
+                        $stmt->close();
+
+                        $conn->close();
+                        createConnection();
+
+
+                        $result = $conn->query($sql);
+                        if ($result) {
+                            $isSuccessful = true;
+                        }
+                        // Update Table:sponsor
+                        // !!!! Does not update sponsor unless an entry already exists in the table !!!!
+                        $sql = "UPDATE sponsor SET sponsorName='" . $_POST['txtSponsor'] . "' WHERE id_runner = " . $thisRunner['id_runner'];
+                        $result = $conn->query($sql);
+                        if (!$result) {
+                            $isSuccessful = false;
+                        }
+                        // If successful update the variables
+                        if ($isSuccessful) {
+                            displayMessage("Update successful!", "green");
+                            $thisRunner['id_runner'] = $_POST['lstRunner'];
+                            $thisRunner['fName'] = $_POST['txtFName'];
+                            $thisRunner['lName'] = $_POST['txtLName'];
+                            $thisRunner['phone'] = unformatPhone($_POST['txtPhone']);
+                            $thisRunner['gender'] = $_POST['lstGender'];
+                            $thisRunner['sponsor'] = $_POST['txtSponsor'];
+
+                            // Save array as a serialized session variable
+                            $_SESSION['sessionThisRunner'] = urlencode(serialize($thisRunner));
+                        }
+                    }
+                    // Zero out the current selected runner
+                    clearThisRunner();
                     break;
 
             } // end of switch( )
@@ -242,51 +326,62 @@
     </form>
     <br/><br/>
     <h2>Registered Runners</h2>
-    <!-- <table>
-       <tr>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Gender</th>
-          <th>Sponsor</th>
-       </tr>
 
-       <tr>
-          <td>first Runner</td>
-          <td>123-456-7890</td>
-          <td>Male</td>
-          <td>3M Corporation</td>
-       </tr>
-       <tr>
-          <td>Second Runner</td>
-          <td>223-256-2222</td>
-          <td>Female</td>
-          <td>Nike</td>
-       </tr>
-       <tr>
-          <td>Third Runner</td>
-          <td>333-256-3333</td>
-          <td>Female</td>
-          <td>Wells Fargo</td>
-       </tr>
-    </table>
-    -->
     <?PHP
     displayRunnerTable();
     echo "<br />";
     ?>
     <script>
-        // Insert the values from the selected runner into the text boxes
-        // This code moved into the value=" " attribute of each text box
-        //document.getElementById("txtFName").value = "<?PHP echo $thisRunner['fName']; ?>";
-        //document.getElementById("txtLName").value = "<?PHP echo $thisRunner['lName']; ?>";
-        //document.getElementById("txtPhone").value = "<?PHP echo $thisRunner['phone']; ?>";
-        //document.getElementById("txtSponsor").value = "<?PHP echo $thisRunner['sponsor']; ?>";
 
         // Update the values of the list boxes based on the current selection
         document.getElementById("lstRunner").value = "<?PHP echo $thisRunner['id_runner']; ?>";
         document.getElementById("lstGender").value = "<?PHP echo $thisRunner['gender']; ?>";
     </script>
 
+    <h1>Prepared Statements as a defense against SQL Injection</h1>
+    <h2>What is SQL injection?</h2>
+    <p>SQL injection is a technique used by hackers to attempt to execute their own SQL commands by "injecting" them into
+        user inputs. For example, consider a query which uses a username password combination to locate a particular user id:
+
+        <hr/><br/>SELECT user_id FROM users WHERE uname=$uname AND passcode=$pass;<br/><hr/><br/>
+
+        Additionally, consider $uname and $passcode as containing raw user input passed through a POST call. A hacker could
+        enter a username that they didn't know (say "paul" the password to and for the password field enter 1 OR "1"="1".
+        They query above would then evaluate to:
+
+        <hr/><br/>SELECT user_id FROM users WHERE uname="paul" AND passcode=1 OR "1"="1";<br/><hr/><br/>
+
+        Here, the "injected" sql is the "1"="1" which would allow the user to bypass the uname and passcode check.
+    </p>
+
+    <h2>How do prepared statements defend against SQL Injection?</h2>
+    <p>A prepared statement is technique used to create a parameterized query. First a template is sent to the DBMS
+    (such as mysql). The DBMS parses the statement and prepares it for execution. At this point, the parameter values
+    in the statement are unknown, but the DBMS is ready to execute the query. Finally, the values for the parameters are
+    provided to the DBMS which executes the query using these parameters. Prepared statements have several advantages. One
+    advantage is that the DBMS can compile and optimize the statement which can increase performance if multiple calls to
+     the statement are made.</p>
+    <p>Another advantage is that prepared statements involve the separation of executable code from parameterized data.
+    This makes them a great defense against SQL injection, which relies on data being falsely recognized as sql code.</p>
+
+    <h1>Control of user input</h1>
+    <h2>Controlling for embedded HTML and javascript</h2>
+    <p>To control for text input involving HTML using php, one can use the built-in php functions strip_tags() or html_entities().
+        The function strip_tags(), for example, takes two arguments: a string to be parsed, and optionally, allowable tags.
+        It returns a new string consisting of all the characters in the old minus any html tags not specified in the second
+        parameter.</p>
+    <p>The function html_entities() takes in 4 arguments: the string to be parsed, optional flags which provide an array
+        of customization to the function (e.g., ENT_NOQUOTES - a constant represented a flag that prompts the function to
+        leave single and double quotation marks alone), an optional encoding string, which defines what encode scheme (e.g.,
+         ISO-8859-1) is to be used to encode the html, and a bool which specifies whether the existing html entities will
+         be encoded.
+    </p>
+    <p>
+        The function strip_tags() is useful when a developer would like to remove html tags from a string, whereas the
+        function html_entities() is useful when a developer would like to encode the html tags instead.
+    </p>
+
 </div>
+
 </body>
 </html>
