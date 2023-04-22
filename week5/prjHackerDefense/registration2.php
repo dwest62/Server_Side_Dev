@@ -380,7 +380,6 @@
         The function strip_tags() is useful when a developer would like to remove html tags from a string, whereas the
         function html_entities() is useful when a developer would like to encode the html tags instead.
     </p>
-
 </div>
 
 </body>
