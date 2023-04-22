@@ -11,7 +11,7 @@
    Written by Peter K. Johnson for The Learning House
    Written  08-01-15
    Revised: 08-05-15 Refactor code grouping the create and add records together
-                     Populate runner_race dbTable
+                     Populate runner_race table 
 */
    
 // Set up connection constants
@@ -29,20 +29,20 @@ if ($conn->connect_error) {
 } 
 
 // Start with a new database to start primary keys at 1
-$sql = "DROP DATABASE " . DB_NAME;
-runQuery($sql, "DROP " . DB_NAME, true);
+$sql = "DROP DATABASE " . DATABASE_NAME;
+runQuery($sql, "DROP " . DATABASE_NAME, true);
 
 // Create database if it doesn't exist
-$sql = "CREATE DATABASE IF NOT EXISTS " . DB_NAME;
+$sql = "CREATE DATABASE IF NOT EXISTS " . DATABASE_NAME;
 if ($conn->query($sql) === TRUE) {
-    echo "The database " . DB_NAME . " exists or was created successfully!<br />";
+    echo "The database " . DATABASE_NAME . " exists or was created successfully!<br />";
 } else {
-    echo "Error creating database " . DB_NAME . ": " . $conn->error;
+    echo "Error creating database " . DATABASE_NAME . ": " . $conn->error;
     echo "<br />";
 }
 
 // Select the database
-$conn->select_db(DB_NAME);
+$conn->select_db(DATABASE_NAME);
 
 /*******************************
  * Create Tables
@@ -171,7 +171,7 @@ if ($result = $conn->query($sql)) {
    //determine number of rows result set 
    $row_count = $result->num_rows;
    if($row_count > 0) {
-      echo "RunnerTable " . $thisRunner
+      echo "Runner " . $thisRunner
       . " has already registered for race " 
       . $thisRace . "<br />";
    } else { // Not a duplicate
@@ -235,7 +235,7 @@ $conn->close();
 /****************************************************************
  * buildRunnerRace( ) - Register runner for specific races
  *                       using sample data.
- *  Sets up a dbTable with two foreign keys
+ *  Sets up a table with two foreign keys 
  *  connecting Table:runner to Table:race
  *    Parameters:  $fName - runner's first name
  *                 $lName - runner's last name
@@ -272,7 +272,7 @@ function buildRunnerRace($fName, $lName, $thisRace) {
    /* determine number of rows result set */
    $row_count = $result->num_rows;
    if($row_count > 0) {
-      echo "RunnerTable " . $thisRunner
+      echo "Runner " . $runnerID
       . " has already registered for race " 
       . $thisRace . "<br />";
    } else { // Not a duplicate
@@ -291,7 +291,7 @@ function buildRunnerRace($fName, $lName, $thisRace) {
  ********************************************/
 function displayResult($result, $sql) {
    if ($result->num_rows > 0) {
-      echo "<dbTable border='1'>\n";
+      echo "<table border='1'>\n";
       // print headings (field names)
       $heading = $result->fetch_assoc( );
       echo "<tr>\n";
@@ -318,7 +318,7 @@ function displayResult($result, $sql) {
            }
            echo "</tr>\n";
        }
-       echo "</dbTable>\n";
+       echo "</table>\n";
    } else {
        echo "<strong>zero results using SQL: </strong>" . $sql;
    }
