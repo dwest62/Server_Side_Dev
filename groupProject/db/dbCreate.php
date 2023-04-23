@@ -16,16 +16,19 @@
     -->
 
     <?PHP
-        include_once "component/DBHandler.php";
+        ini_set('display_errors', 1);
+        error_reporting(E_ALL);
+        echo "2";
+        include_once 'component/DBHandler.php';
         include_once "component/DestinationTable.php";
         include_once "component/DestinationTagTable.php";
         include_once "component/Table.php";
         include_once "component/TagTable.php";
         include_once "component/TagTypeTable.php";
-        include_once "../../params.php";
+        require_once "../../params.php";
         require_once "component/dbProcedure.php";
 
-        const DB_NAME = "dbTravelMinnesota";
+        const DB_NAME = "dbtravelminnesota";
 
         $startData = json_decode(file_get_contents("data.json", true), true);
         $dbh = new DBHandler(SERVER, USER, PASSWORD, NULL);

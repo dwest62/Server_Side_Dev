@@ -49,7 +49,7 @@ class TagTypeTable extends Table
     public static function getTagTypes(DBHandler $dbh): array
     {
         $dbh->openConnection();
-        $sql = "SELECT * FROM tag_Type";
+        $sql = "SELECT * FROM tag_type";
         return $dbh->getConn()->query($sql)->fetch_all(1);
     }
 

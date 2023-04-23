@@ -20,9 +20,9 @@ class DBHandler
         $this->password = $password;
         $this->database = $database;
         $conn = new mysqli(
-            self::getParam($hostname, "host"),
-            self::getParam($userName, "user"),
-            self::getParam($password, "password"),
+            $hostname,
+            $userName,
+            $password,
             $database
         );
 
@@ -55,11 +55,11 @@ class DBHandler
         $this->conn->close();
         $this->connected = false;
     }
+    
     public function createDatabase(string $dbName): bool
     {
-
         $sql = "CREATE DATABASE IF NOT EXISTS $dbName";
-        $result = $this->conn->query($dbName);
+        $result = $this->conn->query($sql);
         if(!$this->conn->error)
         {
             $this->conn->select_db($dbName);
@@ -76,8 +76,7 @@ class DBHandler
 
     public function dropDatabase(string $dbName): bool
     {
-        $sql =
-            "DROP DATABASE $dbName";
+        $sql ="DROP DATABASE $dbName";
         return $this->conn->query($sql);
     }
 
