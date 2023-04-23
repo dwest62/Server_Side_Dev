@@ -186,6 +186,7 @@
                         $ufPhone = unFormatPhone($_POST['txtPhone']);
                         $sql = "CALL runnerUpdate(?,?,?,?,?)";
                         $stmt = $conn->prepare($sql);
+                        echo $stmt->error;
 
                         $stmt->bind_param(
                             "issss",
