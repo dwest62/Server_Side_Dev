@@ -41,6 +41,21 @@ class TagTypeTable extends Table
         return new TagType();
     }
 
+    public static function deleteTagType(DBHandler $dbh, int $id): bool
+    {
+        $dbh->openConnection();
+        $sql = "DELETE FROM tag_type WHERE tag_type_id = ?";
+        $conn=$dbh->getConn();
+        $stmt = $conn->prepare($sql);
+        if($stmt->error) {
+            return false;
+        }
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->close();
+        return true;
+    }
+
     public function getName(): string
     {
         return "tag_type";
