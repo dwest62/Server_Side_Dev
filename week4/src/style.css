@@ -1,0 +1,109 @@
+/**
+    Stylesheet for week 4 individual project
+    Contributors: James West - westj4@csp.edu
+    Course: CSC235 Server-Side Development
+    Assignment: Week 4 Project
+    Date: 4/10/2023
+ */
+
+body
+{
+    font-family: sans-serif;
+}
+
+header {
+    margin-top: 20px;
+}
+
+main {
+    margin: 30px;
+}
+
+h1 {
+    display: block;
+    width: fit-content;
+    margin: auto;
+}
+
+h3 {
+    font-size: 18px;
+    border-bottom: black solid;
+    padding-bottom: 5px;
+}
+
+p {
+    font-size: 14px;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 10px;
+}
+
+img {
+    display: block;
+    margin: auto;
+    width: 750px;
+}
+.q-and-a {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 15px;
+}
+.question {
+    font-weight: bold;
+    font-style: italic;
+    padding: 0px;
+    margin: 0px;
+}
+
+.answer {
+    padding: 0px;
+    margin: 0px;
+}
+
+#admin-h1 {
+    margin-top: 75px;
+}
+
+#admin-body, #admin-body > form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#admin-body {
+    gap: 30px;
+}
+
+#admin-body > form {
+    margin-top: 40px;
+    gap: 5px;
+}
+
+#admin-body > form > button {
+    margin-top: 15px;
+    padding: 8px;
+    background: dimgray;
+    color: white;
+    border: solid black 1px;
+    border-radius: 5px;
+}
+
+#results {
+    display: block;
+    width: fit-content;
+    border: solid black 2px;
+    padding: 20px;
+
+}
+
+#results:empty {
+    border: none;
+}
+
+

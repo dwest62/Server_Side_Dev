@@ -1,0 +1,98 @@
+/**
+    style.css - Stylesheet for priceEdit.php
+    James West - westj4@csp.edu
+    Course: CSC235 Server-Side Development
+    Assignment: Group Project
+    Date: 4/24/2023
+ */
+
+body {
+    font-family: sans-serif;
+    margin: 50px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+h1 {
+    border: 1px;
+    padding: 5px;
+    background: lightslategray;
+    color: aliceblue;
+    text-align: center;
+    font-size: 24px;
+}
+
+table {
+    margin: auto;
+    border: 1px solid slategray;
+
+}
+
+
+caption{
+    text-transform: capitalize;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-style: italic;
+}
+
+th {
+    background: darkgray;
+    color: aliceblue;
+}
+
+input {
+    width: 300px;
+    height: 50px;
+    text-wrap: normal;
+}
+input[type='submit'] {
+    display: block;
+    width: 50px;
+    height: 30px;
+    margin: 15px auto;
+}
+
+#table_details {
+    font-size: 16px;
+}
+
+#books {
+    margin: 40px 0;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    display: flex;
+    gap: 10px;
+}
+
+.book {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    border: 1px solid slategray;
+    padding: 5px;
+    align-items: center;
+    width: fit-content;
+}
+
+.book > h2 {
+    font-size: medium;
+    padding: 0px;
+    margin-top: 10px;
+
+}
+
+.book > p, .book > blockquote {
+    font-size: small;
+}
+.book > blockquote {
+    font-style: italic;
+    width: 300px;
+}
+
+img {
+    display: block;
+    width: 750px;
+    margin: auto;
+}
