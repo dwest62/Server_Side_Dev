@@ -29,7 +29,7 @@ function displayTable(String $query, mysqli $conn): bool
     }
     else if (!$result->num_rows > 0)
     {
-        echo "No rows to display";
+        echo "No rows to user";
         return false;
     }
     else
@@ -57,7 +57,7 @@ function displayParameterizedTable(array $params, mysqli $conn)
     }
     else if (!$result->num_rows > 0)
     {
-        echo "No rows to display";
+        echo "No rows to user";
         return false;
     }
     echo "<dbTable>";
