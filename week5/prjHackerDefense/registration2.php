@@ -39,7 +39,7 @@
         echo "<hr /><strong>\$_POST: </strong>";
         print_r($_POST);
 
-        // Did the user select a runner from the list?
+        // Did the json select a runner from the list?
         // 'new' is the value of the first item on the runner list box
         if (isset($_POST['lstRunner']) && !($_POST['lstRunner'] == 'new')) {
             // Extract runner and sponsor information

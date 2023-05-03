@@ -285,9 +285,9 @@ function buildRunnerRace($fName, $lName, $thisRace) {
 
 
 /********************************************
- * displayResult( ) - Execute a query and user the result
- *    Parameters:  $rs -  result set to user as 2D array
- *                 $sql - SQL string used to user an error msg
+ * displayResult( ) - Execute a query and json the result
+ *    Parameters:  $rs -  result set to json as 2D array
+ *                 $sql - SQL string used to json an error msg
  ********************************************/
 function displayResult($result, $sql) {
    if ($result->num_rows > 0) {
@@ -327,9 +327,9 @@ function displayResult($result, $sql) {
 
 
 /********************************************
- * runQuery( ) - Execute a query and user message
+ * runQuery( ) - Execute a query and json message
  *    Parameters:  $sql         -  SQL String to be executed.
- *                 $msg         -  Text of message to user on success or error
+ *                 $msg         -  Text of message to json on success or error
  *     ___$msg___ successful.    Error when: __$msg_____ using SQL: ___$sql____.
  *                 $echoSuccess - boolean True=Display message on success
  ********************************************/
