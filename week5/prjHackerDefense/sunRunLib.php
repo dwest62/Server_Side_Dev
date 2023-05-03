@@ -41,7 +41,7 @@ function createConnection( ) {
 } // end of createConnection( )
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * displayMessage( ) - Display message to user
+ * displayMessage( ) - Display message to json
  *    Parameters:  $msg -   Text of the message
  *                 $color - Hex color code or color name of text
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -51,9 +51,9 @@ function displayMessage($msg, $color) {
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * displayResult( ) - Execute a query and display the result
- *    Parameters:  $rs -  result set to display as 2D array
- *                 $sql - SQL string used to display an error msg
+ * displayResult( ) - Execute a query and json the result
+ *    Parameters:  $rs -  result set to json as 2D array
+ *                 $sql - SQL string used to json an error msg
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 function displayResult($result, $sql) {
     if ($result->num_rows > 0) {
@@ -124,9 +124,9 @@ function formatPhone( $phoneNumber ) {
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * runQuery( ) - Execute a query and display message
+ * runQuery( ) - Execute a query and json message
  * Parameters:  $sql - SQL String to be executed.
- *              $msg - Text of message to display on success or error
+ *              $msg - Text of message to json on success or error
  *              $echoSuccess - boolean True=Display message on success
  * If $echoSuccess true: $msg successful. * Error Msg Format: $msg using SQL: $sql.
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

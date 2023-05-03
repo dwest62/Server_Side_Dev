@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Administration Page</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="icon" type="image/x-icon" href="/groupProject/graphic/favicon.png">
 
     <!--
         admin.php - Web application consisting of forms used to add, delete, update, and view dbtravelminnesota tables.
@@ -12,42 +13,16 @@
         Revised: 4/25/23
     -->
     <?PHP
-    // TODO add feedback message coloring
-    // TODO add header and coloring once scheme is more defined
-
-    // Destination testing
-    // TODO remove capacity for add new to add blank entries and display feedback instead
-    // TODO add new currently displays old value, clear form instead.
-    // TODO display feedback when blank or in db already
-
-    // Tag Form Testing
-    // TODO add new - display feedback when name is blank, tag type not selected or tag is in db
-    // TODO add new currently resets form. Display newly added record instead?
-    // TODO on update - add tag name to feedback message
-
-
-    // Selected Destination Tags - Operating as intended
-
-    // Tag Type Form
-    // TODO add new - display feedback when name is blank instead of allowing it to be added
-    // TODO re-organize buttons
-
-    // TODO refactor code
-    // TODO add comments
-    // TODO delete unused code and functions
-    // TODO package code to be turned in
-
-
-    require_once "../../../params.php";
-    require_once "../../db/component/Table.php";
-    require_once "../../db/component/DestinationTable.php";
-    require_once "../../db/component/Destination.php";
-    require_once "../../db/component/DBHandler.php";
-    require_once "../../db/component/DestinationTagTable.php";
-    require_once "../../db/component/Tag.php";
-    require_once "../../db/component/TagTable.php";
-    require_once "../../db/component/TagTypeTable.php";
-    require_once "../../db/component/TagType.php";
+    require_once "../../params.php";
+    require_once "../db/component/Table.php";
+    require_once "../db/component/DestinationTable.php";
+    require_once "../db/component/Destination.php";
+    require_once "../db/component/DBHandler.php";
+    require_once "../db/component/DestinationTagTable.php";
+    require_once "../db/component/Tag.php";
+    require_once "../db/component/TagTable.php";
+    require_once "../db/component/TagTypeTable.php";
+    require_once "../db/component/TagType.php";
 
     // Global connection object
     $dbh = new DBHandler(SERVER, USER, PASSWORD, "dbtravelminnesota");
@@ -57,9 +32,8 @@
     $destinationTagTable = new DestinationTagTable();
     $tagTable = new TagTable();
 
-    print_r($_POST);
     // Update to provide feedback on form operations
-    $feedback = "<p></p>";
+    $feedback = "<p class='success'>Feedback Displayed Here</p>";
 
     // Handle the various form button submissions
     if (isset($_POST['btnSubmit'])) {
@@ -182,7 +156,6 @@
         ? TagTypeTable::getTagTypeById($tagTypes, $_POST['lstTagType'])
         : new TagType();
 
-    echo $feedback;
     $dbh->closeConnection();
     ?>
     <script>
@@ -194,11 +167,14 @@
     </script>
 </head>
 <body>
+<?PHP require_once "shared/header.html";?>
 <main>
     <!-- Feedback for form operations -->
-    <hr/>
-    <?= $feedback ?>
-    <hr/>
+    <div id="feedback">
+        <hr/>
+        <?= $feedback ?>
+        <hr/>
+    </div>
     <div id="frame">
         <div class="destAllWrapper">
             <div class="frmGroup">
@@ -493,4 +469,3 @@
 </main>
 </body>
 </html>
-

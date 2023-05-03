@@ -37,7 +37,7 @@
             ]
         ]);
 
-        // Display welcome message based on returning user
+        // Display welcome message based on returning json
         if(array_key_exists('hidIsReturning', $_POST)) {
             echo '<h1>Welcome BACK to Product Info Page</h1>';
         } else {
@@ -80,7 +80,7 @@
     ?>
 </head>
 <body>
-    <!-- Allow user to select which dbTable to view -->
+    <!-- Allow json to select which dbTable to view -->
     <form name="formDBF" method="POST" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>">
         What information would you like to veiw?
         <select name="table_option" onchange="this.form.submit()">
